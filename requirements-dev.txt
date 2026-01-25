@@ -1,0 +1,25 @@
+# Development dependencies
+# NOTE: pyproject.toml is the source of truth for dependencies.
+# This file is maintained for compatibility with tools that don't support pyproject.toml.
+# To update dependencies, edit [project.optional-dependencies.dev] in pyproject.toml.
+#
+# Preferred installation: pip install -e ".[dev]"
+
+-r requirements.txt
+
+# Code formatting and linting
+black>=24.3.0
+isort==5.13.2
+flake8==7.0.0
+mypy==1.8.0
+pydocstyle==6.3.0
+
+# Testing
+pytest==7.4.4
+pytest-cov==4.1.0
+
+# Pre-commit hooks
+pre-commit==3.6.0
+
+# Version management
+bump-my-version==0.18.0

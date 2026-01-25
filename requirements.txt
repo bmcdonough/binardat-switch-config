@@ -1,0 +1,9 @@
+# Runtime dependencies
+# NOTE: pyproject.toml is the source of truth for dependencies.
+# This file is maintained for compatibility with tools that don't support pyproject.toml.
+# To update dependencies, edit [project.dependencies] in pyproject.toml and regenerate this file.
+#
+# Generate with: pip-compile pyproject.toml (requires pip-tools)
+# Or manually sync with pyproject.toml
+
+# Add production dependencies here as the project develops
