@@ -205,3 +205,9 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Binardat Switch Config - Local configuration files
+*.local.yaml
+*.local.yml
+*credentials*.yaml
+*credentials*.yml
