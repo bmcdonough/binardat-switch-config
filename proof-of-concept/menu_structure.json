@@ -1,0 +1,2423 @@
+{
+  "menu": [
+    {
+      "id": "network",
+      "label": "Network",
+      "children": [
+        {
+          "label": "Network Config",
+          "url": "getRipNetworkConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "Network Config",
+          "url": "getOspfNetworkConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "Network Config",
+          "url": "getBgpNetwork.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        }
+      ]
+    },
+    {
+      "id": "system",
+      "label": "System",
+      "children": [
+        {
+          "label": "System Utilization",
+          "url": "Utilization.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "system"
+        },
+        {
+          "label": "View System Config",
+          "url": "showRunConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "system"
+        },
+        {
+          "label": "System Homepage",
+          "url": "homepage.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "system"
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "children": [
+        {
+          "label": "Security IP",
+          "url": "loginUserDSecIP.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "Security IP Config",
+          "url": "snmp_secutiryip_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        }
+      ]
+    },
+    {
+      "id": "port",
+      "label": "Port",
+      "children": [
+        {
+          "label": "IPv4 Config",
+          "url": "Manageportip.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "TFTP",
+          "url": "ImportExportConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Mode",
+          "url": "loopback_port_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Config",
+          "url": "getLLDPPortInfo.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "TLV  Config",
+          "url": "getLLDPPortTlv.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Statistics",
+          "url": "Mon_port.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "port"
+        },
+        {
+          "label": "Port Config",
+          "url": "getPortCfg.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port 10G Mode",
+          "url": "get10GPort.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Channel Group",
+          "url": "getPortChannel.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "LACP",
+          "url": "getPortChannelLACP.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Mirror",
+          "url": "getPortMonitor.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "port"
+        },
+        {
+          "label": "Port Isolate",
+          "url": "getPortIso.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "port"
+        },
+        {
+          "label": "Port Rate",
+          "url": "getPortRate.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "port"
+        },
+        {
+          "label": "Show VLAN",
+          "url": "getVlanPortConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Config",
+          "url": "getVlanPortType.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "GVRP Port",
+          "url": "getGVRPEnablePort.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Config",
+          "url": "getVoiceVlanPort.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Config",
+          "url": "getMacVlanPort.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Binding",
+          "url": "getDhcpBindingPort.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Trust Port",
+          "url": "getDhcpTrustPort.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Binding Port",
+          "url": "getBindingPort.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Config",
+          "url": "getMstpPortCfg.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Port Instance",
+          "url": "getMstpPortInstance.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Static Router Port",
+          "url": "getIgmpRouter.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Static Router Port",
+          "url": "getMldRouter.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        },
+        {
+          "label": "Policy Config",
+          "url": "getQosPortPolicy.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "port"
+        }
+      ]
+    },
+    {
+      "id": "vlan",
+      "label": "Vlan",
+      "children": [
+        {
+          "label": "VLAN Loopback",
+          "url": "loopback_vlan_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        },
+        {
+          "label": "VLAN ID",
+          "url": "getVlanConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        },
+        {
+          "label": "VLAN Config",
+          "url": "getVoiceVlanOUI.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        },
+        {
+          "label": "VLAN Config",
+          "url": "getMacVlanConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        },
+        {
+          "label": "VLAN Member",
+          "url": "getMacVlanMember.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        },
+        {
+          "label": "Protocol VLAN",
+          "url": "getProtoVlanConfig.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "vlan"
+        },
+        {
+          "label": "VLAN Config",
+          "url": "getDhcpSnoopingVlan.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        },
+        {
+          "label": "Binding Vlan",
+          "url": "getBindingVlan.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        },
+        {
+          "label": "VLAN Config",
+          "url": "getIgmpvlan.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        },
+        {
+          "label": "VLAN Config",
+          "url": "getMldvlan.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        },
+        {
+          "label": "Policy VLAN",
+          "url": "getQosPolicyVlan.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "vlan"
+        }
+      ]
+    },
+    {
+      "id": "status",
+      "label": "Status",
+      "children": [
+        {
+          "label": "DDMI Status",
+          "url": "Mon_ddm.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "status"
+        },
+        {
+          "label": "Status",
+          "url": "getMstpStatus.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "status"
+        }
+      ]
+    },
+    {
+      "id": "config",
+      "label": "Config",
+      "children": [
+        {
+          "label": "IPv6 Config",
+          "url": "GetInterfaceIpv6.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "HTTP",
+          "url": "webHttpServerConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "HTTPS",
+          "url": "webSslConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "NTP Config",
+          "url": "ntpserverconfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "NTP Authentication Config",
+          "url": "NtpAthenConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Server Config",
+          "url": "Sntpserverconfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Time Zone Config",
+          "url": "configTimeDiffer.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Global Config",
+          "url": "snmp_config_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "User Config",
+          "url": "snmp_user_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "security"
+        },
+        {
+          "label": "Group Config",
+          "url": "snmp_group_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Community Config",
+          "url": "snmp_community_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Trap Config",
+          "url": "snmp_trap_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "View Config",
+          "url": "web_snmp_view_engineid_Html.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "RMON History Config",
+          "url": "rmon_history_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "RMON Event Config",
+          "url": "rmon_event_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "RMON Alarm Config",
+          "url": "rmon_alarm_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Server Config",
+          "url": "onvif_server_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Detect Config",
+          "url": "getOnvifDetect.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Global Config",
+          "url": "getLLDPGlobalInfo.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "status"
+        },
+        {
+          "label": "SSH Config",
+          "url": "ssh_get.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "config"
+        },
+        {
+          "label": "Telnet Config",
+          "url": "telnet_get.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "config"
+        },
+        {
+          "label": "Radius",
+          "url": "RadiusConfigForm.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Tacacs",
+          "url": "TacacsConfigForm.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Dot1x",
+          "url": "Dot1xConfigForm.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "DNS Config",
+          "url": "DnsSeverConfig.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "config"
+        },
+        {
+          "label": "GVRP Config",
+          "url": "getGVRPConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Global Config",
+          "url": "getDhcpsGlobal.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "DHCP Relay Config",
+          "url": "getDhcpRelay.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Global Config",
+          "url": "getDhcpSnoopingGlobal.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Helper-server Config",
+          "url": "getDhcpSnoopingServer.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Time Range Config",
+          "url": "getTimeRange.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "config"
+        },
+        {
+          "label": "ERPS Ring Config",
+          "url": "getErpsRingCreate.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "ERPS Instance Config",
+          "url": "getErpsInstance.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Basic Config",
+          "url": "getRipBasicConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "Passive Interface",
+          "url": "getRipPassiveConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "Neighbor Config",
+          "url": "getRipNeighborConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "Interface Config",
+          "url": "getRipInterfaceConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "Basic Config",
+          "url": "getOspfBasicConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Passive Interface",
+          "url": "getOspfPassiveConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Area Config",
+          "url": "getOspfAreaConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Interface Config",
+          "url": "getOspfInterfaceConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Basic Config",
+          "url": "getBgpBasicConfig.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Neighbor Config",
+          "url": "getBgpNeighbor.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "BGP Correlative Config",
+          "url": "getBgpCorrelative.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Timer Config",
+          "url": "getBgpTimer.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Basic Config",
+          "url": "getIgmpBasic.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Querier Config",
+          "url": "getIgmpquery.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Basic Config",
+          "url": "getMldBasic.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Querier Config",
+          "url": "getMldquery.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Trust Config",
+          "url": "getQosTrustInfo.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "status"
+        },
+        {
+          "label": "Weight Config",
+          "url": "getQosWeight.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Class-Map Config",
+          "url": "getQosclassname.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Class-Map Rule Config",
+          "url": "getQosclassrule.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Policy Name Config",
+          "url": "getQospolicyname.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Policy Class Config",
+          "url": "getQospolicyclass.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        },
+        {
+          "label": "Policy Mark Config",
+          "url": "getQospolicymark.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "config"
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "label": "Other",
+      "children": [
+        {
+          "label": "Web Timeout",
+          "url": "getWebLoginTimeout.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "ACL",
+          "url": "loginAclName.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "User Management",
+          "url": "usermanag.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "security"
+        },
+        {
+          "label": "Authentication Method",
+          "url": "usermanagprivacy.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "security"
+        },
+        {
+          "label": "HTTP Upgrade",
+          "url": "uploadFiremare.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "TFTP Service",
+          "url": "firwareupgradetftp.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "FTP Service",
+          "url": "firwareupgradeftp.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "HTTP",
+          "url": "getSysFileByHttp.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Device Reboot/Reset",
+          "url": "devicemanagement.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "View Logging Buffer",
+          "url": "LoggingBuffer.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "View Logging Flash",
+          "url": "LoggingFlash.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Device Info",
+          "url": "devinfo.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "status"
+        },
+        {
+          "label": "SNMP Statistics",
+          "url": "snmp_state_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "RMON Statistics",
+          "url": "rmon_statics_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Interval Time",
+          "url": "loopback_interval_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Recovery Timeout",
+          "url": "loopback_recovery_get.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Neighbor Info",
+          "url": "getLLDPShow.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Ping",
+          "url": "ping.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "other"
+        },
+        {
+          "label": "Traceroute",
+          "url": "traceroute.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "other"
+        },
+        {
+          "label": "Cable Diagnostics",
+          "url": "virtualCable_get.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "other"
+        },
+        {
+          "label": "Static MAC",
+          "url": "getStaticMac.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Black Hole MAC",
+          "url": "getBlackholeMac.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Aging-time",
+          "url": "getAgingtimeMac.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "MAC Address List",
+          "url": "getSearchMac.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Radius Accounting",
+          "url": "RadiusAccountingForm.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Jumbo Frame",
+          "url": "getMTU.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "other"
+        },
+        {
+          "label": "Storm Control",
+          "url": "getStormControl.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "other"
+        },
+        {
+          "label": "AM",
+          "url": "getAccessManage.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "other"
+        },
+        {
+          "label": "Enable Dot1q Tunnel",
+          "url": "getdot1qTunnel.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Dot1q Tunnel TPID",
+          "url": "getdot1qTunnelTpid.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Create Address Pool",
+          "url": "getCreatePool.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Dynamic Pool",
+          "url": "getDhcpsDynPool.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Manual Pool",
+          "url": "getDhcpsManPool.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Default Gateway",
+          "url": "getPoolGateway.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "DNS Server",
+          "url": "getPoolDns.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Excluded Address",
+          "url": "getPoolExcludedAddr.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Packet Statistics",
+          "url": "getDhcpsStatistics.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "monitoring"
+        },
+        {
+          "label": "Client List",
+          "url": "getDhcpsClients.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Static User Binding",
+          "url": "getDhcpSnoopingBinding.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "IP Standard ACL",
+          "url": "getStandardIP.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "IP Extended ACL",
+          "url": "getExtendedIP.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "MAC Standard ACL",
+          "url": "getStandardMAC.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "MAC Extended ACL",
+          "url": "getExtendedMAC.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "MAC-IP Extended ACL",
+          "url": "getExtendedMACIP.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "network"
+        },
+        {
+          "label": "Global Properties",
+          "url": "getMstpCfg.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Instance Mapping",
+          "url": "getInstanceMap.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Instance Properties",
+          "url": "getInstanceProperty.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "View ERPS Statistics",
+          "url": "getErpsStatistics.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "monitoring"
+        },
+        {
+          "label": "Keychain",
+          "url": "getKeychain.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Redistribute Router",
+          "url": "getRipRedistribute.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "View RIP Information",
+          "url": "getRipRouteTable.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "network"
+        },
+        {
+          "label": "Interface Authentication",
+          "url": "getOspfIfnameAuth.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Default Route Originate",
+          "url": "getOspfDefaultInfo.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "status"
+        },
+        {
+          "label": "Redistribute Router",
+          "url": "getOspfRedistribute.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "View OSPF Information",
+          "url": "getOspfRouteTable.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Aggreate Address",
+          "url": "getBgpAgg.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Redistribute Router",
+          "url": "getBgpRedistribute.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "View BGP Information",
+          "url": "getBgpRouteInfo.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "status"
+        },
+        {
+          "label": "Static Route",
+          "url": "getStaticRoute.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "other"
+        },
+        {
+          "label": "Routing Table",
+          "url": "getRouteTable.cgi",
+          "type": "page",
+          "level": 1,
+          "category": "other"
+        },
+        {
+          "label": "Multicast Table",
+          "url": "getIgmpMcastTable.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Multicast Table",
+          "url": "getMldMcastTable.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "CoS-To-IntP Map",
+          "url": "getQosCosMapIntP.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "DSCP-To-IntP Map",
+          "url": "getQosDscpMapIntP.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        },
+        {
+          "label": "Policy Bandwidth",
+          "url": "getQosPolicyBandwidth.cgi",
+          "type": "page",
+          "level": 2,
+          "category": "other"
+        }
+      ]
+    }
+  ],
+  "total_pages": 168,
+  "metadata": {
+    "switch_host": "192.168.2.1",
+    "extraction_method": "html_and_javascript",
+    "total_items": 168,
+    "categories": {
+      "network": 16,
+      "other": 53,
+      "config": 48,
+      "security": 3,
+      "port": 25,
+      "system": 3,
+      "status": 7,
+      "vlan": 11,
+      "monitoring": 2
+    }
+  },
+  "all_pages": [
+    {
+      "label": "DNS Config",
+      "url": "DnsSeverConfig.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "config"
+    },
+    {
+      "label": "Dot1x",
+      "url": "Dot1xConfigForm.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "IPv6 Config",
+      "url": "GetInterfaceIpv6.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "TFTP",
+      "url": "ImportExportConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "View Logging Buffer",
+      "url": "LoggingBuffer.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "View Logging Flash",
+      "url": "LoggingFlash.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "IPv4 Config",
+      "url": "Manageportip.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "DDMI Status",
+      "url": "Mon_ddm.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "status"
+    },
+    {
+      "label": "Port Statistics",
+      "url": "Mon_port.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "port"
+    },
+    {
+      "label": "NTP Authentication Config",
+      "url": "NtpAthenConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Radius Accounting",
+      "url": "RadiusAccountingForm.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Radius",
+      "url": "RadiusConfigForm.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Server Config",
+      "url": "Sntpserverconfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Tacacs",
+      "url": "TacacsConfigForm.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "System Utilization",
+      "url": "Utilization.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "system"
+    },
+    {
+      "label": "Time Zone Config",
+      "url": "configTimeDiffer.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Device Reboot/Reset",
+      "url": "devicemanagement.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Device Info",
+      "url": "devinfo.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "status"
+    },
+    {
+      "label": "FTP Service",
+      "url": "firwareupgradeftp.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "TFTP Service",
+      "url": "firwareupgradetftp.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Port 10G Mode",
+      "url": "get10GPort.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "AM",
+      "url": "getAccessManage.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "other"
+    },
+    {
+      "label": "Aging-time",
+      "url": "getAgingtimeMac.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Aggreate Address",
+      "url": "getBgpAgg.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Basic Config",
+      "url": "getBgpBasicConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "BGP Correlative Config",
+      "url": "getBgpCorrelative.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Neighbor Config",
+      "url": "getBgpNeighbor.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Network Config",
+      "url": "getBgpNetwork.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "Redistribute Router",
+      "url": "getBgpRedistribute.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "View BGP Information",
+      "url": "getBgpRouteInfo.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "status"
+    },
+    {
+      "label": "Timer Config",
+      "url": "getBgpTimer.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Binding Port",
+      "url": "getBindingPort.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Binding Vlan",
+      "url": "getBindingVlan.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "Black Hole MAC",
+      "url": "getBlackholeMac.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Create Address Pool",
+      "url": "getCreatePool.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Port Binding",
+      "url": "getDhcpBindingPort.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "DHCP Relay Config",
+      "url": "getDhcpRelay.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Static User Binding",
+      "url": "getDhcpSnoopingBinding.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Global Config",
+      "url": "getDhcpSnoopingGlobal.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Helper-server Config",
+      "url": "getDhcpSnoopingServer.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "VLAN Config",
+      "url": "getDhcpSnoopingVlan.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "Trust Port",
+      "url": "getDhcpTrustPort.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Client List",
+      "url": "getDhcpsClients.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Dynamic Pool",
+      "url": "getDhcpsDynPool.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Global Config",
+      "url": "getDhcpsGlobal.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Manual Pool",
+      "url": "getDhcpsManPool.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Packet Statistics",
+      "url": "getDhcpsStatistics.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "monitoring"
+    },
+    {
+      "label": "ERPS Instance Config",
+      "url": "getErpsInstance.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "ERPS Ring Config",
+      "url": "getErpsRingCreate.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "View ERPS Statistics",
+      "url": "getErpsStatistics.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "monitoring"
+    },
+    {
+      "label": "IP Extended ACL",
+      "url": "getExtendedIP.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "MAC Extended ACL",
+      "url": "getExtendedMAC.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "MAC-IP Extended ACL",
+      "url": "getExtendedMACIP.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "network"
+    },
+    {
+      "label": "GVRP Config",
+      "url": "getGVRPConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "GVRP Port",
+      "url": "getGVRPEnablePort.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Basic Config",
+      "url": "getIgmpBasic.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Multicast Table",
+      "url": "getIgmpMcastTable.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Static Router Port",
+      "url": "getIgmpRouter.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Querier Config",
+      "url": "getIgmpquery.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "VLAN Config",
+      "url": "getIgmpvlan.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "Instance Mapping",
+      "url": "getInstanceMap.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Instance Properties",
+      "url": "getInstanceProperty.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Keychain",
+      "url": "getKeychain.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Global Config",
+      "url": "getLLDPGlobalInfo.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "status"
+    },
+    {
+      "label": "Port Config",
+      "url": "getLLDPPortInfo.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "TLV  Config",
+      "url": "getLLDPPortTlv.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Neighbor Info",
+      "url": "getLLDPShow.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Jumbo Frame",
+      "url": "getMTU.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "other"
+    },
+    {
+      "label": "VLAN Config",
+      "url": "getMacVlanConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "VLAN Member",
+      "url": "getMacVlanMember.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "Port Config",
+      "url": "getMacVlanPort.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Basic Config",
+      "url": "getMldBasic.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Multicast Table",
+      "url": "getMldMcastTable.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Static Router Port",
+      "url": "getMldRouter.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Querier Config",
+      "url": "getMldquery.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "VLAN Config",
+      "url": "getMldvlan.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "Global Properties",
+      "url": "getMstpCfg.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Port Config",
+      "url": "getMstpPortCfg.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Port Instance",
+      "url": "getMstpPortInstance.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Status",
+      "url": "getMstpStatus.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "status"
+    },
+    {
+      "label": "Detect Config",
+      "url": "getOnvifDetect.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Area Config",
+      "url": "getOspfAreaConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Basic Config",
+      "url": "getOspfBasicConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Default Route Originate",
+      "url": "getOspfDefaultInfo.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "status"
+    },
+    {
+      "label": "Interface Authentication",
+      "url": "getOspfIfnameAuth.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Interface Config",
+      "url": "getOspfInterfaceConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Network Config",
+      "url": "getOspfNetworkConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "Passive Interface",
+      "url": "getOspfPassiveConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Redistribute Router",
+      "url": "getOspfRedistribute.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "View OSPF Information",
+      "url": "getOspfRouteTable.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "DNS Server",
+      "url": "getPoolDns.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Excluded Address",
+      "url": "getPoolExcludedAddr.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Default Gateway",
+      "url": "getPoolGateway.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Port Config",
+      "url": "getPortCfg.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Port Channel Group",
+      "url": "getPortChannel.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "LACP",
+      "url": "getPortChannelLACP.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Port Isolate",
+      "url": "getPortIso.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "port"
+    },
+    {
+      "label": "Port Mirror",
+      "url": "getPortMonitor.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "port"
+    },
+    {
+      "label": "Port Rate",
+      "url": "getPortRate.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "port"
+    },
+    {
+      "label": "Protocol VLAN",
+      "url": "getProtoVlanConfig.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "vlan"
+    },
+    {
+      "label": "CoS-To-IntP Map",
+      "url": "getQosCosMapIntP.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "DSCP-To-IntP Map",
+      "url": "getQosDscpMapIntP.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Policy Bandwidth",
+      "url": "getQosPolicyBandwidth.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Policy VLAN",
+      "url": "getQosPolicyVlan.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "Policy Config",
+      "url": "getQosPortPolicy.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Trust Config",
+      "url": "getQosTrustInfo.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "status"
+    },
+    {
+      "label": "Weight Config",
+      "url": "getQosWeight.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Class-Map Config",
+      "url": "getQosclassname.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Class-Map Rule Config",
+      "url": "getQosclassrule.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Policy Class Config",
+      "url": "getQospolicyclass.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Policy Mark Config",
+      "url": "getQospolicymark.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Policy Name Config",
+      "url": "getQospolicyname.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Basic Config",
+      "url": "getRipBasicConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "Interface Config",
+      "url": "getRipInterfaceConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "Neighbor Config",
+      "url": "getRipNeighborConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "Network Config",
+      "url": "getRipNetworkConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "Passive Interface",
+      "url": "getRipPassiveConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "Redistribute Router",
+      "url": "getRipRedistribute.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "View RIP Information",
+      "url": "getRipRouteTable.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "Routing Table",
+      "url": "getRouteTable.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "other"
+    },
+    {
+      "label": "MAC Address List",
+      "url": "getSearchMac.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "IP Standard ACL",
+      "url": "getStandardIP.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "MAC Standard ACL",
+      "url": "getStandardMAC.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Static MAC",
+      "url": "getStaticMac.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Static Route",
+      "url": "getStaticRoute.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "other"
+    },
+    {
+      "label": "Storm Control",
+      "url": "getStormControl.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "other"
+    },
+    {
+      "label": "HTTP",
+      "url": "getSysFileByHttp.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Time Range Config",
+      "url": "getTimeRange.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "config"
+    },
+    {
+      "label": "VLAN ID",
+      "url": "getVlanConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "Show VLAN",
+      "url": "getVlanPortConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Port Config",
+      "url": "getVlanPortType.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "VLAN Config",
+      "url": "getVoiceVlanOUI.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "Port Config",
+      "url": "getVoiceVlanPort.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Web Timeout",
+      "url": "getWebLoginTimeout.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Enable Dot1q Tunnel",
+      "url": "getdot1qTunnel.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Dot1q Tunnel TPID",
+      "url": "getdot1qTunnelTpid.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "System Homepage",
+      "url": "homepage.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "system"
+    },
+    {
+      "label": "ACL",
+      "url": "loginAclName.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Security IP",
+      "url": "loginUserDSecIP.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "Interval Time",
+      "url": "loopback_interval_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Port Mode",
+      "url": "loopback_port_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "port"
+    },
+    {
+      "label": "Recovery Timeout",
+      "url": "loopback_recovery_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "VLAN Loopback",
+      "url": "loopback_vlan_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "vlan"
+    },
+    {
+      "label": "NTP Config",
+      "url": "ntpserverconfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Server Config",
+      "url": "onvif_server_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Ping",
+      "url": "ping.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "other"
+    },
+    {
+      "label": "RMON Alarm Config",
+      "url": "rmon_alarm_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "RMON Event Config",
+      "url": "rmon_event_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "RMON History Config",
+      "url": "rmon_history_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "RMON Statistics",
+      "url": "rmon_statics_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "View System Config",
+      "url": "showRunConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "system"
+    },
+    {
+      "label": "Community Config",
+      "url": "snmp_community_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Global Config",
+      "url": "snmp_config_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Group Config",
+      "url": "snmp_group_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "Security IP Config",
+      "url": "snmp_secutiryip_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "network"
+    },
+    {
+      "label": "SNMP Statistics",
+      "url": "snmp_state_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "Trap Config",
+      "url": "snmp_trap_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "User Config",
+      "url": "snmp_user_get.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "security"
+    },
+    {
+      "label": "SSH Config",
+      "url": "ssh_get.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "config"
+    },
+    {
+      "label": "Telnet Config",
+      "url": "telnet_get.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "config"
+    },
+    {
+      "label": "Traceroute",
+      "url": "traceroute.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "other"
+    },
+    {
+      "label": "HTTP Upgrade",
+      "url": "uploadFiremare.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "other"
+    },
+    {
+      "label": "User Management",
+      "url": "usermanag.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "security"
+    },
+    {
+      "label": "Authentication Method",
+      "url": "usermanagprivacy.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "security"
+    },
+    {
+      "label": "Cable Diagnostics",
+      "url": "virtualCable_get.cgi",
+      "type": "page",
+      "level": 1,
+      "category": "other"
+    },
+    {
+      "label": "HTTP",
+      "url": "webHttpServerConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "HTTPS",
+      "url": "webSslConfig.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    },
+    {
+      "label": "View Config",
+      "url": "web_snmp_view_engineid_Html.cgi",
+      "type": "page",
+      "level": 2,
+      "category": "config"
+    }
+  ]
+}

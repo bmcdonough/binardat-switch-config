@@ -1,0 +1,292 @@
+{
+  "click_handlers": {
+    "click_handlers": [
+      {
+        "source": "inline_script_3",
+        "selector": "#statusToggle",
+        "handler_snippet": "HideAndShowPanle($(this));    changeAppMainHeight();"
+      },
+      {
+        "source": "inline_script_3",
+        "selector": "#logout",
+        "handler_snippet": "httpPostGet('POST', 'syscmd.cgi', 'cmd=logout', function(val){ \t   if(val.code==0){clearAuthInfo();refreshWeb();"
+      },
+      {
+        "source": "inline_script_3",
+        "selector": "#save",
+        "handler_snippet": "httpPostGet('POST', 'syscmd.cgi', 'cmd=save', function(val){ \t   showBg();if(val.code==0){closeBg();alert('Configuration saved successfully!');console.log('ä¿å­æå!');"
+      },
+      {
+        "source": "inline_script_3",
+        "selector": "#reset",
+        "handler_snippet": "myconfirm('Are you sure you want to restore the switch?', resetDevice);"
+      },
+      {
+        "source": "inline_script_3",
+        "selector": "#reboot",
+        "handler_snippet": "myconfirm('Are you sure you want to reboot the switch?', rebootDevice);"
+      }
+    ],
+    "event_listeners": [
+      {
+        "source": "inline_script_0",
+        "event_type": "change",
+        "handler": "function(e){t._checkAll(e)}"
+      },
+      {
+        "source": "inline_script_0",
+        "event_type": "change",
+        "handler": "function(n){\t\t\t\t\t\tt._checkItemChange()"
+      },
+      {
+        "source": "inline_script_0",
+        "event_type": "click",
+        "handler": "this._attachDocumentEvent"
+      },
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "event_type": "unload",
+        "handler": "oe"
+      },
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "event_type": "DOMContentLoaded",
+        "handler": "B)"
+      },
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "event_type": "load",
+        "handler": "B));var $=function(e"
+      },
+      {
+        "source": "external_/js/jquery.slimscroll.min.js",
+        "event_type": "DOMMouseScroll",
+        "handler": "v"
+      },
+      {
+        "source": "external_/js/jquery.slimscroll.min.js",
+        "event_type": "mousewheel",
+        "handler": "v"
+      },
+      {
+        "source": "external_/js/tooltip.js",
+        "event_type": "mouseenter",
+        "handler": "function(){n(i)}"
+      },
+      {
+        "source": "external_/js/tooltip.js",
+        "event_type": "mouseleave",
+        "handler": "function(){o()}"
+      },
+      {
+        "source": "external_/js/tooltip.js",
+        "event_type": "mouseenter",
+        "handler": "this._elMouseIn.bind(this)"
+      },
+      {
+        "source": "external_/js/tooltip.js",
+        "event_type": "mouseleave",
+        "handler": "this._elMouseOut.bind(this)"
+      },
+      {
+        "source": "external_/js/dialog-plus-min.js",
+        "event_type": "show",
+        "handler": "function(){f.css({opacity:0"
+      },
+      {
+        "source": "external_/js/dialog-plus-min.js",
+        "event_type": "remove",
+        "handler": "function(){b(document).off(\"keydown\""
+      },
+      {
+        "source": "external_/js/dialog-plus-min.js",
+        "event_type": "beforeremove",
+        "handler": "function(){b(\"body\").append(a.hide())})):c.html(a)"
+      },
+      {
+        "source": "external_/js/dialog-plus-min.js",
+        "event_type": "beforeremove",
+        "handler": "function(){c.attr(\"src\""
+      }
+    ],
+    "jquery_selectors": [
+      {
+        "source": "inline_script_3",
+        "selector": "lsm-sidebar"
+      },
+      {
+        "source": "inline_script_3",
+        "selector": "sidebar-item"
+      },
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "selector": "menu"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "selector": "lsm-sidebar"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "selector": "menu"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "selector": "sidebar-item"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "selector": "datalink"
+      }
+    ]
+  },
+  "ajax_calls": {
+    "jquery_load_calls": [],
+    "jquery_ajax_calls": [
+      {
+        "source": "external_/js/utility.js",
+        "config_snippet": "\n\t\turl:url,\n\t\tmethod:\"get\",\n\t\tasync:false,\n\t\tdataType:'text'\n\t"
+      }
+    ],
+    "fetch_calls": [],
+    "xhr_requests": [
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "uses_xhr": true
+      },
+      {
+        "source": "external_/js/utility.js",
+        "uses_xhr": true
+      }
+    ]
+  },
+  "datalink_handling": {
+    "datalink_reads": [
+      {
+        "source": "external_/js/utility.js",
+        "element": "$(this)"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "element": "$(this)"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "element": "that"
+      }
+    ],
+    "datalink_usage_patterns": [],
+    "related_functions": [
+      {
+        "source": "external_/js/utility.js",
+        "function": "reCurrentWeb"
+      }
+    ]
+  },
+  "interaction_patterns": {
+    "expand_collapse": [
+      {
+        "source": "external_/js/utility.js",
+        "method": "addClass",
+        "class": "lsm-sidebar-show"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "method": "removeClass",
+        "class": "lsm-sidebar-show"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "method": "removeClass",
+        "class": "lsm-sidebar-show"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "method": "removeClass",
+        "class": "lsm-sidebar-show"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "method": "removeClass",
+        "class": "active"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "method": "addClass",
+        "class": "active"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "method": "removeClass",
+        "class": "lsm-sidebar-show"
+      }
+    ],
+    "active_state": [
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "class": ")}while((e=e.parentNode)&&1===e.nodeType);return!1}}),target:function(e){var t=n.location&&n.location.hash;return t&&t.slice(1)===e.id},root:function(e){return e===a},focus:function(e){return e===C.activeElement&&(!C.hasFocus||C.hasFocus())&&!!(e.type||e.href||~e.tabIndex)},enabled:ge(!1),disabled:ge(!0),checked:function(e){var t=e.nodeName.toLowerCase();return"
+      },
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "class": ")&&n.push(o)}return f}var be=/^key/,we=/^(?:mouse|pointer|contextmenu|drag|drop)|click/,Te=/^([^.]*)(?:\\.(.+)|)/;function Ce(){return!0}function Ee(){return!1}function Se(e,t){return e===function(){try{return E.activeElement}catch(e){}}()==("
+      },
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "class": ")}function $t(e,t){var n,r,i=S.ajaxSettings.flatOptions||{};for(n in t)void 0!==t[n]&&((i[n]?e:r||(r={}))[n]=t[n]);return r&&S.extend(!0,e,r),e}Wt.href=Tt.href,S.extend({active:0,lastModified:{},etag:{},ajaxSettings:{url:Tt.href,type:"
+      },
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "class": "!=typeof v.data&&(v.data=S.param(v.data,v.traditional)),Bt(Rt,v,t,T),h)return T;for(i in(g=S.event&&v.global)&&0==S.active++&&S.event.trigger("
+      },
+      {
+        "source": "external_/js/jquery-3.5.1.min.js",
+        "class": ",[T,v]),--S.active||S.event.trigger("
+      },
+      {
+        "source": "external_/js/utility.js",
+        "class": "active"
+      },
+      {
+        "source": "external_/js/utility.js",
+        "class": ");\n        for (var i = 0; i < idArr.length; i++) {\n\t\t\thideOrShow($(idArr[i]),val);\n        }\n    }\n}\n\n/*\n函数功能：创建HTTP对象\n参数含义：无\n返回值：无\n*/\nfunction createHttpRequest() {\n    var xmlHttp = false;\n    if (window.XMLHttpRequest) {\n        xmlHttp = new XMLHttpRequest()\n    } else {\n        xmlHttp = new ActiveXObject("
+      },
+      {
+        "source": "external_/js/jquery.dataTables.min.js",
+        "class": ",function(t,e){if(n===e)try{u[0]!==v.activeElement&&u.val(o.sSearch)}catch(t){}}),l[0]}function Rt(t,e,n){function a(t){o.sSearch=t.sSearch,o.bRegex=t.bRegex,o.bSmart=t.bSmart,o.bCaseInsensitive=t.bCaseInsensitive,o.return=t.return}function r(t){return t.bEscapeRegex!==H?!t.bEscapeRegex:t.bRegex}var o=t.oPreviousSearch,i=t.aoPreSearchCols;if(lt(t),"
+      },
+      {
+        "source": "external_/js/jquery.dataTables.min.js",
+        "class": ",sPageButtonActive:"
+      },
+      {
+        "source": "external_/js/jquery.dataTables.min.js",
+        "class": ":p=m.sLast,0!==d&&f!==d-1||(s=!0);break;default:p=u.fnFormatNumber(n+1),g=f===n?b.sPageButtonActive:"
+      },
+      {
+        "source": "external_/js/jquery.dataTables.min.js",
+        "class": ":g===b.sPageButtonActive?"
+      },
+      {
+        "source": "external_/js/jquery.dataTables.min.js",
+        "class": "+n:null}).html(p).appendTo(t),{action:n},r))}}var p,g,n,b=u.oClasses,m=u.oLanguage.oPaginate,S=u.oLanguage.oAria.paginate||{};try{n=P(t).find(v.activeElement).data("
+      },
+      {
+        "source": "external_/js/dialog-plus-min.js",
+        "class": ",show:function(a){if(this.destroyed)return this;var d=this.__popup,g=this.__backdrop;if(this.__activeElement=this.__getActive(),this.open=!0,this.follow=a||this.follow,!this.__ready){if(d.addClass(this.className).attr("
+      },
+      {
+        "source": "external_/js/dialog-plus-min.js",
+        "class": "),this},focus:function(){var a=this.node,d=this.__popup,e=b.current,f=this.zIndex=b.zIndex++;if(e&&e!==this&&e.blur(!1),!c.contains(a,this.__getActive())){var g=d.find("
+      },
+      {
+        "source": "external_/js/dialog-plus-min.js",
+        "class": "),this},blur:function(){var a=this.__activeElement,b=arguments[0];return b!==!1&&this.__focus(a),this._autofocus=!1,this.__popup.removeClass(this.className+"
+      },
+      {
+        "source": "external_/js/dialog-plus-min.js",
+        "class": "+a]();for(var c=0;c<b.length;c++)b[c].call(this)},__focus:function(a){try{this.autofocus&&!/^iframe$/i.test(a.nodeName)&&a.focus()}catch(b){}},__getActive:function(){try{var a=document.activeElement,b=a.contentDocument,c=b&&b.activeElement||a;return c}catch(d){}},__center:function(){var a=this.__popup,b=c(window),d=c(document),e=this.fixed,f=e?0:d.scrollLeft(),g=e?0:d.scrollTop(),h=b.width(),i=b.height(),j=a.width(),k=a.height(),l=(h-j)/2+f,m=382*(i-k)/1e3+g,n=a[0].style;n.left=Math.max(parseInt(l),f)+"
+      }
+    ],
+    "navigation_flow": []
+  }
+}

@@ -1,0 +1,71 @@
+# Example configuration file for batch IP address changes
+# Copy this file to config.local.yaml and modify for your switches
+# (config.local.yaml is gitignored for security)
+
+# WARNING: This file contains credentials in plaintext!
+# - Only use on secure, controlled systems
+# - Never commit actual credentials to version control
+# - Consider using environment variables or a secrets manager
+
+# Global defaults (can be overridden per switch)
+defaults:
+  username: admin
+  password: admin
+  timeout: 30.0
+  verify: true
+  wait_time: 60.0
+
+# List of switches to configure
+switches:
+  - name: "Switch 1 - Office"
+    old_ip: 192.168.2.1
+    new_ip: 192.168.1.10
+    subnet_mask: 255.255.255.0
+    gateway: 192.168.1.1
+    # dns1: 8.8.8.8  # Optional
+    # dns2: 8.8.4.4  # Optional
+
+  - name: "Switch 2 - Warehouse"
+    old_ip: 192.168.2.1  # Factory default
+    new_ip: 192.168.1.20
+    subnet_mask: 255.255.255.0
+    gateway: 192.168.1.1
+
+  - name: "Switch 3 - Server Room"
+    old_ip: 192.168.2.1
+    new_ip: 192.168.1.30
+    subnet_mask: 255.255.255.0
+    gateway: 192.168.1.1
+    # Override default credentials for this switch
+    username: custom_admin
+    password: custom_password
+
+# Usage with batch script (when implemented):
+# python batch_change_ip.py --config config.local.yaml
+
+# Usage with manual script:
+# For each switch, run:
+# python change_ip_address.py \
+#   --old-ip <old_ip> \
+#   --new-ip <new_ip> \
+#   --subnet <subnet_mask> \
+#   --gateway <gateway> \
+#   --username <username> \
+#   --password <password> \
+#   --verify
+
+# Security best practices:
+# 1. Store this file with restricted permissions (chmod 600 config.local.yaml)
+# 2. Use unique, strong passwords for each switch
+# 3. Change default credentials immediately after deployment
+# 4. Consider using a secrets manager or vault
+# 5. Encrypt this file at rest if possible
+# 6. Delete or secure-wipe after use if it contains production credentials
+
+# Network planning tips:
+# 1. Document all IP assignments before starting
+# 2. Ensure new IPs don't conflict with existing devices
+# 3. Configure switches one at a time to avoid confusion
+# 4. Label physical switches with their new IPs after configuration
+# 5. Update network documentation after all changes
+# 6. Test connectivity after each switch configuration
