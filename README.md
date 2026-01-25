@@ -2,6 +2,35 @@
 
 A Python library for configuring Binardat brand network switches from default settings to custom configurations.
 
+## About Binardat Switches
+
+This project was developed for the **Binardat 2G20-16410GSM** 20-Port 2.5G Web Managed Switch.
+
+![Binardat 2G20-16410GSM Switch](images/binardat-2G20-16410GSM.jpg)
+
+### Hardware Specifications
+
+- **Model:** 2G20-16410GSM
+- **Ports:** 16x 2.5G Ethernet + 4x 10G SFP+
+- **Management:** Web/CLI L3 Managed
+- **Form Factor:** Desktop/Rackmount Metal
+
+### Default Settings
+
+When factory reset, the switch defaults to:
+
+- **IP Address:** `192.168.2.1`
+- **Username:** `admin`
+- **Password:** `admin`
+
+### Purchase Information
+
+- **Purchased:** March 2025 from Amazon
+- **Price:** $285.98
+- **Links:**
+  - [Amazon Product Page](https://www.amazon.com/dp/B0D97B1V5R)
+  - [Binardat Product Page](https://www.binardat.com/products/20-port-25g-web-managed-switch,-16x25g-ethernet,-4x10-gigabit-sfp-ports,-web-cli-l3-managed,-metal-multi-gigabit-desktop-rackmount-network-switch-1)
+
 ## Features
 
 - Automated switch configuration from YAML or JSON templates
@@ -41,8 +70,8 @@ pre-commit install
 ```python
 from binardat_switch_config import SwitchConfig, connect_to_switch
 
-# Connect to a switch
-conn = connect_to_switch("192.168.1.1", username="admin", password="secret")
+# Connect to a switch (using default IP and credentials)
+conn = connect_to_switch("192.168.2.1", username="admin", password="admin")
 
 # Load and apply configuration
 config = SwitchConfig.from_file("switch_config.yaml")

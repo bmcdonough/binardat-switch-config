@@ -33,6 +33,11 @@ and this project uses date-based versioning in the format YYYY.MM.DD.
   - src/binardat_switch_config/ package directory
   - tests/ directory for test suite
   - __version__ string in package __init__.py
+- Hardware documentation in README.md
+  - Binardat 2G20-16410GSM switch specifications
+  - Default switch settings (192.168.2.1, admin/admin)
+  - Purchase information and product links
+  - Product image in images/ directory
 
 ### Commits
 - [`1d52005`](https://github.com/bmcdonough/binardat-switch-config/commit/1d52005) - Initial commit
