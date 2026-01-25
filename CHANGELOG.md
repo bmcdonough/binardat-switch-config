@@ -8,6 +8,44 @@ and this project uses date-based versioning in the format YYYY.MM.DD.
 ## [Unreleased]
 
 ### Added
+- **Proof-of-concept implementation for web-based IP configuration**
+  - Complete PoC scripts in proof-of-concept/ directory
+  - Web interface reconnaissance tools (01_reconnaissance.py, analyze_login.py)
+  - RC4 encryption module (rc4_crypto.py) matching switch JavaScript implementation
+  - Session management and authentication (switch_auth.py)
+  - **Menu structure extraction and discovery (Phase 5)**
+    - 03_menu_extraction.py - Automated menu discovery script
+    - HTML navigation parsing (nav elements, menus, frames)
+    - JavaScript menu pattern detection
+    - Automatic page categorization (network, system, security, etc.)
+    - JSON output format (menu_structure.json)
+    - Search functionality for finding specific pages
+    - Menu extraction methods in switch_auth.py (get_main_page, extract_navigation, etc.)
+  - **Menu-aware IP configuration navigation (Phase 6)**
+    - Enhanced navigate_to_ip_config() with menu structure support
+    - _navigate_using_menu() method with scoring and ranking
+    - Automatic fallback to common URLs if menu unavailable
+    - Updated get_current_ip_config() and change_ip_address() methods
+    - 04_test_ip_change.py (renamed from 03_test_ip_change.py)
+    - Automatic menu discovery with find_menu_file() helper
+    - User-friendly messages about menu usage
+  - IP configuration reading and modification capabilities
+  - End-to-end CLI tool for changing switch IP addresses (change_ip_address.py)
+  - Comprehensive testing scripts (02_test_login.py, 04_test_ip_change.py, test_rc4.py)
+  - Example configuration file (config_example.yaml)
+  - Detailed testing guide (TESTING.md)
+  - PoC-specific documentation (README.md in proof-of-concept/)
+  - Menu analysis documentation (docs/menu-analysis.md)
+- **Runtime dependencies**
+  - requests (>=2.31.0) - HTTP client with session management
+  - beautifulsoup4 (>=4.12.0) - HTML parsing
+  - pycryptodome (>=3.19.0) - RC4 encryption
+  - pyyaml (>=6.0) - YAML configuration file support
+- **Security considerations documentation**
+  - HTTP (unencrypted) communication warnings
+  - RC4 cryptographic weakness documentation
+  - Credential handling best practices
+  - Local configuration file gitignore patterns
 - Initial repository setup ([`1d52005`](https://github.com/bmcdonough/binardat-switch-config/commit/1d52005))
   - README.md
   - LICENSE (MIT)

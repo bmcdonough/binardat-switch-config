@@ -14,10 +14,14 @@ We use [bump-my-version](https://callowayproject.github.io/bump-my-version/) to 
 
 ## Setup
 
-### Install bump-my-version
+### Install Required Tools
 
 ```bash
+# Install bump-my-version for version management
 pip install bump-my-version
+
+# Install pip-tools for requirements file generation
+pip install pip-tools
 ```
 
 ### Configuration
@@ -147,7 +151,47 @@ Update the comparison link at the bottom:
 [2026.01.25]: https://github.com/bmcdonough/binardat-switch-config/commit/abc1234
 ```
 
-### 3. Run Tests and Linting
+### 3. Generate Updated Requirements Files
+
+**Important:** `pyproject.toml` is the source of truth for dependencies. The `requirements.txt` and `requirements-dev.txt` files must be regenerated before each release using `pip-compile`.
+
+```bash
+# Install pip-tools if not already installed
+pip install pip-tools
+
+# Generate requirements.txt from pyproject.toml
+pip-compile pyproject.toml --output-file=requirements.txt --strip-extras
+
+# Generate requirements-dev.txt from pyproject.toml (includes dev dependencies)
+pip-compile --extra=dev pyproject.toml --output-file=requirements-dev.txt --strip-extras
+
+# Commit the updated requirements files
+git add requirements.txt requirements-dev.txt
+git commit -m "Update requirements files for release"
+```
+
+**What pip-compile does:**
+- **Resolves the full dependency tree** - Finds all transitive dependencies (dependencies of dependencies)
+- **Pins exact versions** - Converts `requests>=2.31.0` to `requests==2.32.5` for reproducibility
+- **Documents the tree** - Adds comments showing which package requires each dependency
+- **Auto-generates header** - Shows the exact command used to create the file
+
+**Example output:**
+```
+beautifulsoup4==4.14.3      # Direct dependency from pyproject.toml
+certifi==2026.1.4           # Transitive dependency (required by requests)
+requests==2.32.5            # Direct dependency from pyproject.toml
+urllib3==2.6.3              # Transitive dependency (required by requests)
+```
+
+**Why this is necessary:**
+- `pyproject.toml` contains abstract specifications (e.g., `requests>=2.31.0`)
+- `requirements.txt` contains exact pins for **reproducible builds**
+- Ensures all developers and CI use identical dependency versions
+- Makes it easy to audit security vulnerabilities in specific versions
+- Provides compatibility with tools that don't support `pyproject.toml`
+
+### 4. Run Tests and Linting
 
 ```bash
 # Run all quality checks
@@ -162,7 +206,7 @@ pytest --cov
 pre-commit run --all-files
 ```
 
-### 4. Bump the Version
+### 5. Bump the Version
 
 For a regular release:
 ```bash
@@ -180,7 +224,7 @@ This will:
 - Create a git commit
 - Create a git tag
 
-### 5. Review the Changes
+### 6. Review the Changes
 
 ```bash
 # Check the version was updated
@@ -190,7 +234,7 @@ git show HEAD
 git tag -l
 ```
 
-### 6. Push to GitHub
+### 7. Push to GitHub
 
 ```bash
 # Push commits and tags
@@ -198,7 +242,7 @@ git push origin main
 git push origin --tags
 ```
 
-### 7. Create GitHub Release
+### 8. Create GitHub Release
 
 1. Go to https://github.com/bmcdonough/binardat-switch-config/releases
 2. Click **Draft a new release**
@@ -207,7 +251,7 @@ git push origin --tags
 5. **Description:** Copy the relevant section from CHANGELOG.md
 6. Click **Publish release**
 
-### 8. Publish to PyPI (Optional)
+### 9. Publish to PyPI (Optional)
 
 If you want to publish to PyPI:
 
@@ -239,15 +283,22 @@ git status  # Should be clean
 # 2. Update CHANGELOG.md manually
 # ... edit CHANGELOG.md ...
 
-# 3. Commit changelog
+# 3. Generate updated requirements files
+pip install pip-tools
+pip-compile pyproject.toml --output-file=requirements.txt --strip-extras
+pip-compile --extra=dev pyproject.toml --output-file=requirements-dev.txt --strip-extras
+git add requirements.txt requirements-dev.txt
+git commit -m "Update requirements files for release"
+
+# 4. Commit changelog
 git add CHANGELOG.md
 git commit -m "Update CHANGELOG for 2026.01.25 release"
 
-# 4. Run tests
+# 5. Run tests
 pytest --cov
 pre-commit run --all-files
 
-# 5. Bump version (first release of the day)
+# 6. Bump version (first release of the day)
 bump-my-version bump release
 
 # This creates:
@@ -256,12 +307,12 @@ bump-my-version bump release
 # - Git commit: "Bump version: 2026.01.24 → 2026.01.25"
 # - Git tag: 2026.01.25
 
-# 6. Push to GitHub
+# 7. Push to GitHub
 git push origin main
 git push origin --tags
 
-# 7. Create GitHub release via web interface
-# 8. (Optional) Publish to PyPI
+# 8. Create GitHub release via web interface
+# 9. (Optional) Publish to PyPI
 python -m build
 twine upload dist/*
 ```
@@ -312,6 +363,78 @@ bump-my-version bump micro
 ### Commits
 - [`abc1234`](https://github.com/bmcdonough/binardat-switch-config/commit/abc1234) - Add features
 ```
+
+## Managing Dependencies
+
+### Adding a New Dependency
+
+When adding a new runtime or development dependency:
+
+```bash
+# 1. Edit pyproject.toml and add the dependency
+# For runtime: add to [project.dependencies]
+# For dev: add to [project.optional-dependencies.dev]
+
+# 2. Regenerate the requirements files
+pip-compile pyproject.toml --output-file=requirements.txt --strip-extras
+pip-compile --extra=dev pyproject.toml --output-file=requirements-dev.txt --strip-extras
+
+# 3. Install the new dependencies
+pip install -e ".[dev]"
+
+# 4. Commit all changes together
+git add pyproject.toml requirements.txt requirements-dev.txt
+git commit -m "Add <package-name> dependency"
+```
+
+### Updating Dependencies
+
+To get security updates or new features:
+
+```bash
+# Update all dependencies to latest compatible versions
+pip-compile --upgrade pyproject.toml --output-file=requirements.txt --strip-extras
+pip-compile --upgrade --extra=dev pyproject.toml --output-file=requirements-dev.txt --strip-extras
+
+# Update a specific package only
+pip-compile --upgrade-package requests pyproject.toml --output-file=requirements.txt --strip-extras
+
+# Review changes
+git diff requirements.txt requirements-dev.txt
+
+# Reinstall to get new versions
+pip install -e ".[dev]"
+
+# Run tests to ensure compatibility
+pytest --cov
+
+# Commit if all tests pass
+git add requirements.txt requirements-dev.txt
+git commit -m "Update dependencies"
+```
+
+### Understanding the Files
+
+**pyproject.toml** - Source of truth
+```toml
+dependencies = [
+    "requests>=2.31.0",  # Accept any version >= 2.31.0
+]
+```
+
+**requirements.txt** - Auto-generated pinned versions
+```
+requests==2.32.5          # Exact version pip-compile resolved
+certifi==2026.1.4         # Transitive dependency (required by requests)
+charset-normalizer==3.4.4 # Transitive dependency (required by requests)
+urllib3==2.6.3            # Transitive dependency (required by requests)
+```
+
+**Key differences:**
+- `pyproject.toml`: Lists only direct dependencies with flexible version constraints
+- `requirements.txt`: Lists ALL dependencies (direct + transitive) with exact versions
+- `pyproject.toml`: Human-edited
+- `requirements.txt`: Auto-generated by pip-compile, never hand-edited
 
 ## Development Builds
 
@@ -365,9 +488,42 @@ bump-my-version bump --current-version 2026.01.25 release
 bump-my-version bump release --commit-args="[skip ci]"
 ```
 
+### Requirements files out of sync
+
+If `requirements.txt` or `requirements-dev.txt` are out of sync with `pyproject.toml`:
+
+```bash
+# Regenerate from pyproject.toml (source of truth)
+pip-compile pyproject.toml --output-file=requirements.txt --strip-extras
+pip-compile --extra=dev pyproject.toml --output-file=requirements-dev.txt --strip-extras
+
+# Commit the updates
+git add requirements.txt requirements-dev.txt
+git commit -m "Sync requirements files with pyproject.toml"
+```
+
+**Remember:** Always edit dependencies in `pyproject.toml` first, then regenerate the requirements files. Never edit `requirements.txt` or `requirements-dev.txt` directly - they are auto-generated.
+
+### Updating a specific dependency
+
+If you need to update a specific dependency to get a newer version:
+
+```bash
+# Option 1: Update the constraint in pyproject.toml, then regenerate
+# Edit pyproject.toml: change requests>=2.31.0 to requests>=2.32.0
+pip-compile pyproject.toml --output-file=requirements.txt --strip-extras
+
+# Option 2: Use pip-compile's upgrade flag for a specific package
+pip-compile --upgrade-package requests pyproject.toml --output-file=requirements.txt --strip-extras
+
+# Option 3: Upgrade all packages to latest compatible versions
+pip-compile --upgrade pyproject.toml --output-file=requirements.txt --strip-extras
+```
+
 ## References
 
 - [bump-my-version Documentation](https://callowayproject.github.io/bump-my-version/)
 - [CalVer Specification](https://calver.org/)
 - [bump-my-version CalVer Guide](https://callowayproject.github.io/bump-my-version/howtos/calver/)
 - [Calendar Versioning Reference](https://callowayproject.github.io/bump-my-version/reference/calver_reference/)
+- [pip-tools Documentation](https://pip-tools.readthedocs.io/)

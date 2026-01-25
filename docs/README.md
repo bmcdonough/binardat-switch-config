@@ -4,6 +4,7 @@ This directory contains documentation for the binardat-switch-config project.
 
 ## Contents
 
+- **[dependencies.md](dependencies.md)** - Dependency management with pip-compile
 - **[merging.md](merging.md)** - Workflow for creating issues, branches, and merging changes
 - **[releases.md](releases.md)** - Release process using Calendar Versioning (CalVer)
 

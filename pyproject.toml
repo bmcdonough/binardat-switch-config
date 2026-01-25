@@ -32,7 +32,10 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    # Runtime dependencies will be added as the project develops
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0",
+    "pycryptodome>=3.19.0",
+    "pyyaml>=6.0",
 ]
 
 [project.optional-dependencies]
