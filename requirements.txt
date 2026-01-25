@@ -6,4 +6,14 @@
 # Generate with: pip-compile pyproject.toml (requires pip-tools)
 # Or manually sync with pyproject.toml
 
-# Add production dependencies here as the project develops
+# Web communication
+requests>=2.31.0
+
+# HTML parsing
+beautifulsoup4>=4.12.0
+
+# Cryptography (RC4 encryption for switch authentication)
+pycryptodome>=3.19.0
+
+# YAML configuration
+pyyaml>=6.0
