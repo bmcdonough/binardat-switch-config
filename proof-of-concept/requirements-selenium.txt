@@ -1,3 +1,3 @@
 # Selenium dependencies for browser automation
+# Selenium 4.6+ includes Selenium Manager for automatic driver management
 selenium>=4.16.0
-webdriver-manager>=4.0.1

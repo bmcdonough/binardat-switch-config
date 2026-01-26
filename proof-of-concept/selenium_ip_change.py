@@ -30,11 +30,9 @@ from selenium.common.exceptions import (
     WebDriverException,
 )
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
 
 
 class SwitchIPChanger:
@@ -72,8 +70,8 @@ class SwitchIPChanger:
         options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
         print("Setting up Chrome WebDriver...")
-        service = Service(ChromeDriverManager().install())
-        return webdriver.Chrome(service=service, options=options)
+        # Selenium Manager handles driver setup automatically
+        return webdriver.Chrome(options=options)
 
     def _login(
         self, host: str, username: str, password: str
@@ -149,51 +147,91 @@ class SwitchIPChanger:
 
             print("Looking for IPv4 Config menu item...")
 
-            # Wait for menu to be ready
-            wait.until(
-                EC.presence_of_element_located((By.ID, "menu"))
-            )
+            # Wait for page to be ready
+            time.sleep(2)
 
-            # Find the IPv4 Config link by its datalink attribute
-            # The menu uses <a> tags with datalink="Manageportip.cgi"
-            ipv4_link = wait.until(
-                EC.element_to_be_clickable(
-                    (By.CSS_SELECTOR, 'a[datalink="Manageportip.cgi"]')
+            # The menu structure is hierarchical:
+            # 1. Find and click "IP Config" parent menu
+            # 2. Then click the submenu item with datalink="Manageportip.cgi"
+
+            # Step 1: Find and click the "IP Config" parent menu
+            all_links = self.driver.find_elements(By.TAG_NAME, "a")
+            ip_config_parent = None
+
+            for link in all_links:
+                text = link.text.strip()
+                if text == "IP Config":
+                    ip_config_parent = link
+                    print(f"Found 'IP Config' parent menu")
+                    break
+
+            if ip_config_parent is None:
+                print("✗ Could not find 'IP Config' parent menu")
+                # Save page source for debugging
+                with open("debug_after_login.html", "w") as f:
+                    f.write(self.driver.page_source)
+                print("Page source saved to debug_after_login.html")
+                return False
+
+            # Click the parent menu to expand submenu
+            print("Clicking 'IP Config' to expand submenu...")
+            ip_config_parent.click()
+            time.sleep(1)  # Wait for submenu to expand
+
+            # Step 2: Find and click the IPv4 management link
+            print("Looking for IPv4 management submenu item...")
+            ipv4_link = None
+
+            try:
+                ipv4_link = wait.until(
+                    EC.element_to_be_clickable(
+                        (By.CSS_SELECTOR, 'a[datalink="Manageportip.cgi"]')
+                    )
                 )
-            )
+                print("Found IPv4 management link (Manageportip.cgi)")
+            except TimeoutException:
+                print("✗ Could not find link with datalink='Manageportip.cgi'")
+                # Try to find any visible links after expanding
+                visible_links = [l for l in self.driver.find_elements(By.TAG_NAME, "a") if l.is_displayed()]
+                print(f"Found {len(visible_links)} visible links after expanding menu")
+                return False
 
-            print("Clicking IPv4 Config menu item...")
+            print("Clicking IPv4 management submenu item...")
             ipv4_link.click()
 
-            # Wait for the IP config form to load in appMainInner
+            # Wait for the IP config form to load
             print("Waiting for IP configuration form to load...")
             time.sleep(2)  # Give the page time to load via AJAX
 
-            # Switch to the iframe if the content is loaded in one
-            # Otherwise wait for form fields in the main page
+            # Verify form loaded successfully
             try:
-                # Check if form loaded successfully
-                # We'll look for typical IP config form elements
                 wait.until(
                     EC.presence_of_element_located(
                         (By.CSS_SELECTOR, "#appMainInner")
                     )
                 )
                 print("✓ Navigated to IP configuration page")
-                return True
 
+                # Save the IP config page for reference
+                with open("debug_ip_config_loaded.html", "w") as f:
+                    f.write(self.driver.page_source)
+                print("IP config page saved to debug_ip_config_loaded.html")
+
+                return True
             except TimeoutException:
                 print("✗ Could not load IP configuration form")
                 return False
 
         except TimeoutException:
-            print("✗ Navigation failed: Could not find IPv4 Config menu item")
+            print("✗ Navigation failed: Timeout")
             return False
         except NoSuchElementException as e:
             print(f"✗ Navigation failed: {e}")
             return False
         except Exception as e:
             print(f"✗ Navigation error: {e}")
+            import traceback
+            traceback.print_exc()
             return False
 
     def _fill_and_submit_ip_form(
@@ -309,6 +347,10 @@ class SwitchIPChanger:
             # Find and click submit button
             print("Looking for submit button...")
             submit_selectors = [
+                'input[type="button"][value="Apply"]',
+                'input[onclick*="ApplyConfirm"]',
+                'button[onclick*="ApplyConfirm"]',
+                'input[value="Apply"]',
                 'button[type="submit"]',
                 'input[type="submit"]',
                 'button[onclick*="submit"]',
@@ -327,6 +369,15 @@ class SwitchIPChanger:
 
             if submit_button is None:
                 print("✗ Could not find submit button")
+                # Debug: show all buttons on page
+                all_buttons = self.driver.find_elements(By.TAG_NAME, "input")
+                all_buttons.extend(self.driver.find_elements(By.TAG_NAME, "button"))
+                print(f"Found {len(all_buttons)} button elements:")
+                for btn in all_buttons[:10]:
+                    btn_type = btn.get_attribute("type")
+                    btn_value = btn.get_attribute("value")
+                    btn_onclick = btn.get_attribute("onclick")
+                    print(f"  - type='{btn_type}', value='{btn_value}', onclick='{btn_onclick}'")
                 return False
 
             print("Submitting IP configuration...")

@@ -2,6 +2,25 @@
 
 This directory contains proof-of-concept scripts for automating IP address configuration on Binardat switches (model 2G20-16410GSM) via their web interface.
 
+## ⭐ **RECOMMENDED: Selenium Browser Automation** ⭐
+
+**For production IP address changes, use the Selenium-based script:**
+
+```bash
+# Quick start (defaults: 192.168.2.1 → 192.168.2.100)
+pip install -r requirements-selenium.txt
+python selenium_ip_change.py
+
+# With custom settings
+python selenium_ip_change.py --current-ip 192.168.2.1 --new-ip 192.168.2.50
+```
+
+**Why Selenium?** The switch's HTTP CGI endpoints have issues when accessed directly via Python requests (returning HTTP 201 errors). Selenium simulates real browser interaction and is **guaranteed to work**.
+
+**See:** [`SELENIUM_USAGE.md`](./SELENIUM_USAGE.md) for complete documentation.
+
+---
+
 ## Overview
 
 These scripts demonstrate the feasibility of programmatically:
@@ -9,6 +28,8 @@ These scripts demonstrate the feasibility of programmatically:
 2. Navigating to the network configuration pages
 3. Changing the IP address, subnet mask, and gateway
 4. Verifying the configuration change
+
+**Note:** While multiple approaches were explored (direct HTTP API, menu navigation, etc.), **browser automation via Selenium is the most reliable method** for production use.
 
 ## Security Warnings
 
@@ -38,6 +59,54 @@ pip install -e ".[dev]"
 ```
 
 ## Scripts
+
+### 🎯 Production Tools (Selenium-Based)
+
+**`selenium_ip_change.py`** - **RECOMMENDED** IP address change tool
+- Browser automation using Selenium WebDriver
+- Logs in, navigates to IP config, changes settings, and verifies
+- Most reliable method (bypasses HTTP API issues)
+- Command-line interface with sensible defaults
+- Automatic verification with ping and re-login
+- Usage:
+  ```bash
+  # Install dependencies first
+  pip install -r requirements-selenium.txt
+
+  # Basic usage (192.168.2.1 → 192.168.2.100)
+  python selenium_ip_change.py
+
+  # Custom configuration
+  python selenium_ip_change.py \
+    --current-ip 192.168.2.1 \
+    --new-ip 192.168.2.100 \
+    --subnet 255.255.255.0 \
+    --gateway 192.168.2.1 \
+    --username admin \
+    --password admin
+
+  # Debug mode (show browser)
+  python selenium_ip_change.py --show-browser
+  ```
+- **See:** [`SELENIUM_USAGE.md`](./SELENIUM_USAGE.md) for complete guide
+
+**`test_selenium_setup.py`** - Verify Selenium installation
+- Tests Selenium and ChromeDriver setup
+- Verifies browser automation works
+- Run this before using `selenium_ip_change.py`
+- Usage:
+  ```bash
+  python test_selenium_setup.py
+  ```
+
+**`requirements-selenium.txt`** - Selenium dependencies
+- `selenium` - Browser automation framework (includes Selenium Manager for automatic ChromeDriver setup)
+
+---
+
+### Research & Development Scripts
+
+The following scripts were used to research the switch's web interface and develop the HTTP API approach. While functional for exploration, **Selenium is recommended for production IP changes**.
 
 ### Phase 2: Reconnaissance
 
@@ -149,7 +218,45 @@ pip install -e ".[dev]"
 
 ## Typical Workflow
 
-### Single Switch Configuration
+### Production: Single Switch IP Change (Selenium - **RECOMMENDED**)
+
+1. **Install Selenium dependencies:**
+   ```bash
+   pip install -r requirements-selenium.txt
+   ```
+
+2. **Test setup:**
+   ```bash
+   python test_selenium_setup.py
+   ```
+
+3. **Change IP address:**
+   ```bash
+   # With defaults (192.168.2.1 → 192.168.2.100)
+   python selenium_ip_change.py
+
+   # Or with custom values
+   python selenium_ip_change.py \
+     --current-ip 192.168.2.1 \
+     --new-ip 192.168.1.100 \
+     --subnet 255.255.255.0 \
+     --gateway 192.168.1.1 \
+     --username admin \
+     --password admin
+   ```
+
+That's it! The script will:
+- Log in to the current IP
+- Navigate to IP configuration
+- Submit changes
+- Wait for switch to apply settings
+- Verify by pinging and logging into new IP
+
+---
+
+### Development: HTTP API Exploration (Research Scripts)
+
+**Note:** These scripts are for research and development. For production, use the Selenium approach above.
 
 1. **Test connectivity:**
    ```bash
@@ -161,32 +268,16 @@ pip install -e ".[dev]"
    python proof-of-concept/02_test_login.py --host 192.168.2.1 --username admin --password admin
    ```
 
-3. **Extract menu structure (recommended):**
+3. **Extract menu structure:**
    ```bash
    python proof-of-concept/03_menu_extraction.py --username admin --password admin --display-tree
    ```
    This discovers all available pages and helps locate the IP configuration page.
 
-4. **Test IP change (dry-run):**
+4. **Test IP change (HTTP API - limited success):**
    ```bash
-   python proof-of-concept/change_ip_address.py \
-     --old-ip 192.168.2.1 \
-     --new-ip 192.168.1.100 \
-     --subnet 255.255.255.0 \
-     --username admin \
-     --password admin \
-     --dry-run
-   ```
-
-5. **Perform IP change:**
-   ```bash
-   python proof-of-concept/change_ip_address.py \
-     --old-ip 192.168.2.1 \
-     --new-ip 192.168.1.100 \
-     --subnet 255.255.255.0 \
-     --username admin \
-     --password admin \
-     --verify
+   python proof-of-concept/04_test_ip_change.py --change-ip \
+     --new-ip 192.168.1.100 --subnet-mask 255.255.255.0 --dry-run
    ```
 
 ### Batch Configuration
