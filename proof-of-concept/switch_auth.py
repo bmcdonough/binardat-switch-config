@@ -768,13 +768,18 @@ class SwitchSession:
         """
         links = []
         for link in element.find_all("a"):
-            href_attr = link.get("href", "")
-            href = str(href_attr) if href_attr else ""
-            if (
-                not href
-                or href.startswith("#")
-                or href.startswith("javascript:")
-            ):
+            url = ""
+            # Prioritize 'datalink' attribute
+            datalink_attr = link.get("datalink", "")
+            if datalink_attr and not datalink_attr.startswith("#") and not datalink_attr.startswith("javascript:"):
+                url = str(datalink_attr)
+            else:
+                # Fallback to 'href' attribute
+                href_attr = link.get("href", "")
+                if href_attr and not href_attr.startswith("#") and not href_attr.startswith("javascript:"):
+                    url = str(href_attr)
+            
+            if not url:
                 continue
 
             # Get link text
@@ -786,13 +791,13 @@ class SwitchSession:
                 text = (
                     str(title_attr)
                     if title_attr
-                    else str(alt_attr) if alt_attr else href
+                    else str(alt_attr) if alt_attr else url
                 )
 
             links.append(
                 {
                     "label": text,
-                    "url": href,
+                    "url": url,
                 }
             )
 
@@ -843,6 +848,29 @@ class SwitchSession:
             menu_item = self._parse_js_object(item_str)
             if menu_item and "url" in menu_item:
                 menu_items.append(menu_item)
+        
+        # Pattern 3: Generic array of objects with label/url (e.g., within function calls)
+        # This tries to catch arrays that look like menu definitions
+        generic_array_pattern = r'\[\s*(\{.*?\})\s*(?:,\s*\{.*?\})*\s*\]'
+        for array_match in re.finditer(generic_array_pattern, js_content, re.DOTALL):
+            array_str = array_match.group(0)
+            # Attempt to parse as JSON if it looks like a valid array of objects
+            try:
+                # Replace single quotes with double quotes for JSON parsing if present
+                json_like_str = array_str.replace("'", '"')
+                data = json.loads(json_like_str)
+                if isinstance(data, list):
+                    for item in data:
+                        if isinstance(item, dict) and "label" in item and "url" in item:
+                            menu_items.append(item)
+            except json.JSONDecodeError:
+                # If not a strict JSON, try to parse individual objects
+                item_matches = re.finditer(r'\{([^}]*?)\}', array_str)
+                for item_match in item_matches:
+                    item_str = item_match.group(1)
+                    menu_item = self._parse_js_object(item_str)
+                    if menu_item and "url" in menu_item:
+                        menu_items.append(menu_item)
 
         return menu_items
 
@@ -858,8 +886,8 @@ class SwitchSession:
         result: Dict[str, Any] = {}
 
         # Extract key:value or "key":"value" pairs
-        # Handle both quoted and unquoted keys/values
-        pair_pattern = r'["\']?(\w+)["\']?\s*:\s*["\']?([^,"\']+)["\']?'
+        # Handle both quoted and unquoted keys/values, and ensure values can contain spaces
+        pair_pattern = r'(?:\"|\')?([\w\d\s\-\_]+)(?:\"|\')?\s*:\s*(?:\"|\')?([^,\"\']+)(?:\"|\')?'
         matches = re.finditer(pair_pattern, js_obj_str)
 
         for match in matches:
@@ -891,7 +919,14 @@ class SwitchSession:
                 discovered.append(item)
                 seen_urls.add(item["url"])
 
-        # Extract JavaScript content
+        # Also check the entire HTML for any JavaScript menu definitions
+        js_items_from_html = self.extract_menu_from_js(html)
+        for item in js_items_from_html:
+            if item["url"] not in seen_urls:
+                discovered.append(item)
+                seen_urls.add(item["url"])
+
+        # Extract JavaScript content from script tags
         soup = BeautifulSoup(html, "html.parser")
         scripts = soup.find_all("script")
 
@@ -916,9 +951,13 @@ class SwitchSession:
                         if item["url"] not in seen_urls:
                             discovered.append(item)
                             seen_urls.add(item["url"])
-                except Exception:
-                    # Skip if unable to fetch
+                except requests.RequestException:
+                    # Skip if unable to fetch due to network error
                     pass
+                except Exception as e:
+                    # Catch other potential errors during JS parsing or processing
+                    print(f"Warning: Error processing external JS from {src}: {e}")
+
 
         return discovered
 

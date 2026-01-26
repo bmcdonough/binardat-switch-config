@@ -1,8 +1,13 @@
-# Selenium IP Change Script - Usage Guide
+# Selenium Scripts - Usage Guide
 
 ## Overview
 
-`selenium_ip_change.py` is a browser automation script that changes a Binardat switch's IP address through the web interface. It uses Selenium WebDriver to simulate real user interaction, bypassing the HTTP API issues discovered during development.
+This directory contains browser automation scripts for configuring Binardat switches:
+
+- **`selenium_ip_change.py`** - Changes switch IP address
+- **`enable_ssh_selenium.py`** - Enables SSH access on the switch
+
+Both scripts use Selenium WebDriver to simulate real user interaction, bypassing the HTTP API issues discovered during development.
 
 ## Why Selenium?
 
@@ -286,13 +291,411 @@ By default, the script runs in headless mode (no visible browser). This is more 
   - Computer must be able to reach both old and new IP addresses
   - No proxy or firewall blocking HTTP traffic
 
+---
+
+# SSH Enablement Script
+
+## Overview
+
+`enable_ssh_selenium.py` enables SSH access on Binardat switches through the web interface. This is a **one-time setup** that unlocks SSH-based configuration for all future management tasks.
+
+## Why Enable SSH?
+
+**The Path to a Minimal Solution:**
+
+1. ✅ **Use Selenium ONCE** - Run this script to enable SSH via web interface
+2. ✅ **Switch to SSH** - Use lightweight paramiko/netmiko for all future configuration
+3. ✅ **100x Smaller Footprint** - 2MB (paramiko) vs 200MB (Chrome/Selenium)
+4. ✅ **30x Faster** - 1-2 seconds vs 60 seconds per operation
+
+After SSH is enabled, you can:
+- Configure switch settings via CLI commands
+- Use standard SSH libraries (paramiko, netmiko)
+- Deploy in minimal environments (Docker, embedded systems)
+- Avoid browser automation overhead
+
+## Basic Usage
+
+### Default Configuration
+
+Enable SSH on switch at 192.168.2.1 with defaults (admin/admin, port 22):
+
+```bash
+python enable_ssh_selenium.py
+```
+
+This uses:
+- Switch IP: 192.168.2.1
+- Username: admin
+- Password: admin
+- SSH Port: 22
+- Headless mode (no browser window)
+- Automatic port verification enabled
+
+### Custom Switch IP
+
+```bash
+python enable_ssh_selenium.py --switch-ip 192.168.2.100
+```
+
+### Custom Credentials
+
+```bash
+python enable_ssh_selenium.py --username admin --password mypassword
+```
+
+### Full Configuration
+
+```bash
+python enable_ssh_selenium.py \
+  --switch-ip 192.168.2.1 \
+  --username admin \
+  --password admin \
+  --port 22 \
+  --show-browser
+```
+
+## Command-Line Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--switch-ip` | 192.168.2.1 | IP address of the switch |
+| `-u, --username` | admin | Login username |
+| `-p, --password` | admin | Login password |
+| `--port` | 22 | SSH port number |
+| `--show-browser` | False | Show browser window (for debugging) |
+| `--no-verify` | False | Skip SSH port verification |
+| `--timeout` | 10 | Timeout in seconds for page loads |
+
+## How It Works
+
+The script follows these steps:
+
+### 1. Login
+- Navigates to `http://<switch-ip>/`
+- Fills username and password fields
+- Clicks login button
+- Waits for redirect to main page
+
+### 2. Navigate to SSH Config
+- Finds "Monitor Management" parent menu
+- Clicks to expand submenu
+- Clicks "SSH Config" (linked to `ssh_get.cgi`)
+- Waits for configuration form to load via AJAX
+
+### 3. Enable SSH Form
+- Locates SSH enable field (checkbox/dropdown/radio)
+- Enables SSH service
+- Optionally configures SSH port (if field exists)
+- Finds and clicks submit button
+
+### 4. Save Configuration
+- Executes JavaScript to call `syscmd.cgi` with `cmd=save`
+- Ensures SSH remains enabled after reboot
+
+### 5. Verification (unless `--no-verify`)
+- Waits 5 seconds for SSH service to start
+- Tests socket connection to SSH port
+- Reports accessibility status
+
+## Expected Output
+
+```
+Setting up Chrome WebDriver...
+Navigating to http://192.168.2.1/...
+Waiting for login form...
+Logging in as 'admin'...
+Waiting for main page to load...
+✓ Login successful
+Looking for Monitor Management menu...
+Found 'Monitor Management' parent menu
+Clicking 'Monitor Management' to expand submenu...
+Looking for SSH Config submenu item...
+Found SSH Config link (ssh_get.cgi)
+Clicking SSH Config submenu item...
+Waiting for SSH configuration form to load...
+✓ Navigated to SSH configuration page
+SSH config page saved to debug_ssh_config_loaded.html
+Looking for SSH enable form fields...
+Found enable field with selector: input[name="enable"]
+Found checkbox for SSH enable
+Enabling SSH (checking checkbox)...
+Looking for submit button...
+Found submit button with selector: input[type="button"][value="Apply"]
+Submitting SSH configuration...
+✓ Form submitted successfully
+Saving configuration to switch...
+✓ Configuration save command sent
+
+✓ SSH enablement process completed successfully
+SSH service should now be active...
+Closing browser...
+
+============================================================
+Verifying SSH port 22 accessibility...
+============================================================
+
+Waiting for SSH service to start (5 seconds)...
+✓ SSH port 22 is accessible
+
+You can now connect via SSH:
+  ssh admin@192.168.2.1
+
+============================================================
+SSH ENABLEMENT COMPLETED
+Switch: 192.168.2.1
+Port: 22
+============================================================
+```
+
+## Verification Steps
+
+After running the script, verify SSH access:
+
+### 1. Test SSH Connection
+
+```bash
+ssh admin@192.168.2.1
+```
+
+If prompted about host key:
+```
+The authenticity of host '192.168.2.1 (192.168.2.1)' can't be established.
+ECDSA key fingerprint is SHA256:...
+Are you sure you want to continue connecting (yes/no)? yes
+```
+
+### 2. Check SSH Service Status
+
+Once connected via SSH:
+```bash
+show ssh server status
+# or
+show running-config | include ssh
+```
+
+### 3. Test Configuration via SSH
+
+Now you can configure the switch via CLI:
+```bash
+# Example: Change IP via SSH (no Selenium needed!)
+ssh admin@192.168.2.1 <<EOF
+configure terminal
+interface vlan 1
+ip address 192.168.2.100 255.255.255.0
+exit
+write memory
+exit
+EOF
+```
+
+## Troubleshooting
+
+### Issue: SSH port not responding after script completes
+
+**Symptoms:**
+```
+⚠ SSH port 22 is not responding
+```
+
+**Solutions:**
+
+1. **Switch may require reboot** - Many switches only start SSH after reboot:
+   ```bash
+   # Log in to web interface and reboot switch
+   # Or wait for scheduled reboot
+   ```
+
+2. **Verify SSH is enabled in web interface:**
+   - Log in to `http://192.168.2.1/`
+   - Navigate to Monitor Management → SSH Config
+   - Confirm SSH is enabled
+
+3. **Check firewall/network:**
+   - Try from another machine
+   - Check switch firewall settings
+   - Verify no ACLs blocking SSH
+
+4. **SSH may be on different port:**
+   ```bash
+   nmap -p 22,23,2222 192.168.2.1
+   ```
+
+### Issue: Form fields not found
+
+**Symptoms:**
+```
+Could not find enable field automatically. Inspecting form...
+Found 3 input/select fields:
+  - name='status', id='ssh_status', type='select'
+  ...
+```
+
+**Solutions:**
+
+1. **Use `--show-browser`** to see the form:
+   ```bash
+   python enable_ssh_selenium.py --show-browser
+   ```
+
+2. **Check debug output:**
+   - Script saves page HTML to `debug_ssh_config_loaded.html`
+   - Inspect to find actual field names
+   - Report issue if firmware uses different fields
+
+3. **Firmware variation:**
+   - Different switch models may have different forms
+   - Script tries multiple field name patterns
+   - May need customization for specific firmware
+
+### Issue: SSH disabled after reboot
+
+**Possible causes:**
+1. Configuration not saved properly
+2. Factory reset performed
+3. Configuration restored from backup without SSH enabled
+
+**Debug steps:**
+1. Re-run script to re-enable SSH
+2. Verify save command succeeds
+3. Backup configuration after enabling SSH
+
+## Post-SSH Configuration Examples
+
+Once SSH is enabled, you can use lightweight Python scripts:
+
+### Example 1: Configure IP via SSH (No Selenium!)
+
+```python
+import paramiko
+
+def configure_switch_ip(host, username, password, new_ip, netmask):
+    """Configure switch IP via SSH - 2MB dependency, 2 seconds execution."""
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(host, username=username, password=password)
+
+    commands = [
+        "configure terminal",
+        "interface vlan 1",
+        f"ip address {new_ip} {netmask}",
+        "exit",
+        "write memory",
+    ]
+
+    for cmd in commands:
+        stdin, stdout, stderr = ssh.exec_command(cmd)
+        print(stdout.read().decode())
+
+    ssh.close()
+
+# Usage
+configure_switch_ip(
+    host="192.168.2.1",
+    username="admin",
+    password="admin",
+    new_ip="192.168.2.100",
+    netmask="255.255.255.0"
+)
+```
+
+### Example 2: Using Netmiko (Even Simpler)
+
+```python
+from netmiko import ConnectHandler
+
+device = {
+    'device_type': 'cisco_ios',  # Or appropriate type for switch
+    'host': '192.168.2.1',
+    'username': 'admin',
+    'password': 'admin',
+}
+
+with ConnectHandler(**device) as net_connect:
+    output = net_connect.send_config_set([
+        'interface vlan 1',
+        'ip address 192.168.2.100 255.255.255.0',
+    ])
+    output += net_connect.save_config()
+    print(output)
+```
+
+### Example 3: Batch Configuration
+
+```bash
+#!/bin/bash
+# Configure multiple switches via SSH - FAST!
+
+SWITCHES=(
+  "192.168.2.1"
+  "192.168.2.2"
+  "192.168.2.3"
+)
+
+for switch in "${SWITCHES[@]}"; do
+  echo "Configuring $switch..."
+
+  sshpass -p admin ssh -o StrictHostKeyChecking=no admin@$switch <<EOF
+    configure terminal
+    snmp-server community public RO
+    snmp-server community private RW
+    write memory
+    exit
+EOF
+
+  echo "✓ Configured $switch"
+done
+```
+
+## Dependencies Comparison
+
+| Solution | Install Size | Execution Time | Use Case |
+|----------|-------------|----------------|----------|
+| **Selenium (this script)** | ~200MB | 30-60s | One-time SSH enablement |
+| **Paramiko (SSH)** | ~2MB | 1-2s | All config after SSH enabled |
+| **Netmiko (SSH)** | ~3MB | 1-2s | Network device automation |
+| **HTTP API** | ~500KB | N/A | ❌ Doesn't work (HTTP 201) |
+
+## Security Notes
+
+### SSH Key Authentication (Recommended)
+
+After enabling SSH, configure key-based authentication:
+
+1. **Generate SSH key:**
+   ```bash
+   ssh-keygen -t ed25519 -f ~/.ssh/binardat_switch
+   ```
+
+2. **Copy public key to switch:**
+   ```bash
+   ssh-copy-id -i ~/.ssh/binardat_switch.pub admin@192.168.2.1
+   ```
+
+3. **Connect without password:**
+   ```bash
+   ssh -i ~/.ssh/binardat_switch admin@192.168.2.1
+   ```
+
+### Password Security
+
+Avoid hardcoding passwords:
+
+```python
+import getpass
+import paramiko
+
+password = getpass.getpass("Switch password: ")
+# Use password in SSH connection
+```
+
 ## Comparison with Other Approaches
 
-| Method | Status | Pros | Cons |
-|--------|--------|------|------|
-| **Selenium (this script)** | ✅ Working | Guaranteed to work, handles JavaScript | Requires Chrome, slower |
-| **Direct HTTP API** | ❌ Fails | Fast, pure Python | CGI endpoints return error 201 |
-| **SSH/Telnet CLI** | ❓ Unknown | Standard network management | May not be enabled on switch |
+| Method | Script | Status | Pros | Cons |
+|--------|--------|--------|------|------|
+| **Selenium Web Automation** | `selenium_ip_change.py`, `enable_ssh_selenium.py` | ✅ Working | Guaranteed to work, handles JavaScript, one-time setup for SSH | Requires Chrome (~200MB), slower (30-60s) |
+| **SSH/Paramiko CLI** | Custom scripts | ✅ After SSH enabled | Fast (1-2s), lightweight (2MB), standard network management | Requires SSH to be enabled first via web |
+| **Direct HTTP API** | `switch_auth.py` | ❌ Fails | Fast, pure Python, small footprint | CGI endpoints return error 201, firmware rejects non-browser requests |
 
 ## Future Improvements
 
