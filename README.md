@@ -65,6 +65,39 @@ pip install -e ".[dev]"
 pre-commit install
 ```
 
+## Docker Quick Start
+
+The fastest way to enable SSH on your Binardat switch is using Docker:
+
+```bash
+# Using defaults (192.168.2.1, admin/admin)
+docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+
+# With custom IP and credentials
+docker run --network host \
+  -e SWITCH_IP=192.168.2.50 \
+  -e SWITCH_PASSWORD=mypassword \
+  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+```
+
+**Documentation:**
+- [Docker Quick Start](docs/docker/quickstart.md) - Get started in minutes
+- [Docker Usage Guide](docs/docker/usage.md) - Comprehensive reference
+- [Troubleshooting](docs/docker/troubleshooting.md) - Common issues and solutions
+
+**Building Locally:**
+
+```bash
+# Clone and build
+git clone https://github.com/bmcdonough/binardat-switch-config.git
+cd binardat-switch-config
+git checkout develop
+
+# Build and run
+docker build -t binardat-ssh-enabler:latest .
+docker run --network host binardat-ssh-enabler:latest
+```
+
 ## Usage
 
 ```python

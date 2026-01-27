@@ -3,11 +3,35 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project uses date-based versioning in the format YYYY.MM.DD.
+and this project uses date-based versioning (`YYYY.MM.DD`).
 
 ## [Unreleased]
 
 ### Added
+
+- **Docker Support** - Complete Docker packaging for SSH enablement functionality
+  - Dockerfile with Python 3.12-slim base and Chromium/ChromeDriver
+  - Docker Compose support for easy deployment
+  - Runtime configuration via environment variables (SWITCH_IP, SWITCH_USERNAME, etc.)
+  - Non-root container execution for security (switchuser, uid 1000)
+  - Host network mode support for switch access
+  - Comprehensive Docker documentation:
+    - Quick Start guide (`docs/docker/quickstart.md`)
+    - Usage guide (`docs/docker/usage.md`)
+    - Building guide (`docs/docker/building.md`)
+    - Troubleshooting guide (`docs/docker/troubleshooting.md`)
+  - Helper scripts for building and testing Docker images (`scripts/build-docker.sh`, `scripts/test-docker.sh`)
+  - Configuration examples (`examples/env.example`, `examples/docker-compose.example.yml`)
+- **Refactored SSH Enabler** - Docker-compatible version of the Selenium-based SSH enabler
+  - Environment variable support with fallback to CLI arguments
+  - Signal handlers for graceful shutdown (SIGTERM, SIGINT)
+  - Automatic ChromeDriver detection (Docker vs local development)
+  - Enhanced logging for container environments
+  - Removed debug HTML file saving (Docker-friendly)
+- **Source Code Organization**
+  - New `src/` directory with production-ready code
+  - `src/enable_ssh.py` - Refactored SSH enabler with Docker support
+  - `src/rc4_crypto.py` - RC4 encryption module (copied from proof-of-concept)
 - **Proof-of-concept implementation for web-based IP configuration**
   - Complete PoC scripts in proof-of-concept/ directory
   - Web interface reconnaissance tools (01_reconnaissance.py, analyze_login.py)
@@ -41,6 +65,7 @@ and this project uses date-based versioning in the format YYYY.MM.DD.
   - beautifulsoup4 (>=4.12.0) - HTML parsing
   - pycryptodome (>=3.19.0) - RC4 encryption
   - pyyaml (>=6.0) - YAML configuration file support
+  - selenium (>=4.16.0) - Browser automation for SSH enablement
 - **Security considerations documentation**
   - HTTP (unencrypted) communication warnings
   - RC4 cryptographic weakness documentation
@@ -99,7 +124,15 @@ and this project uses date-based versioning in the format YYYY.MM.DD.
   - Product image in images/ directory
 - Comprehensive README with installation and usage examples
 
+### Changed
+
+- Updated README.md with Docker quick start section and links to Docker documentation
+- Project now supports both traditional Python library usage and containerized SSH enablement
+- Updated README from minimal description to comprehensive documentation
+- Reorganized .gitignore with trailing whitespace fixes
+
 ### Fixed
+
 - CI workflow dependency and configuration issues ([`0b02295`](https://github.com/bmcdonough/binardat-switch-config/commit/0b02295))
   - Fixed bump-my-version version from 0.18.0 (non-existent) to >=0.25.0
   - Updated CI to use modern `pip install -e ".[dev]"` instead of requirements files
@@ -107,11 +140,8 @@ and this project uses date-based versioning in the format YYYY.MM.DD.
   - Added pydocstyle check to lint job
   - Scoped linting tools to src/ and tests/ directories only
 
-### Changed
-- Updated README from minimal description to comprehensive documentation
-- Reorganized .gitignore with trailing whitespace fixes
-
 ### Commits
+
 - [`1d52005`](https://github.com/bmcdonough/binardat-switch-config/commit/1d52005) - Initial commit
 - [`d6a85f3`](https://github.com/bmcdonough/binardat-switch-config/commit/d6a85f3) - Organize repository into standard Python library structure
 - [`0b02295`](https://github.com/bmcdonough/binardat-switch-config/commit/0b02295) - Fix CI workflow and dependency issues
