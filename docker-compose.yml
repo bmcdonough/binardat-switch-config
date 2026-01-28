@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  ssh-enabler:
+    build: .
+    image: binardat-ssh-enabler:latest
+    environment:
+      - SWITCH_IP=${SWITCH_IP:-192.168.2.1}
+      - SWITCH_USERNAME=${SWITCH_USERNAME:-admin}
+      - SWITCH_PASSWORD=${SWITCH_PASSWORD:-admin}
+      - SWITCH_SSH_PORT=${SWITCH_SSH_PORT:-22}
+      - TIMEOUT=${TIMEOUT:-10}
+    network_mode: host
