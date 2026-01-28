@@ -20,6 +20,40 @@ docker run --network host \
 - Network access to your Binardat switch
 - Switch at default IP (192.168.2.1) or known IP address
 
+## Version Selection
+
+### Choosing a Docker Tag
+
+Multiple image tags are available for different use cases:
+
+- **`:latest`** - Always the newest stable release (good for testing and development)
+- **`:v2026.01.28`** - Specific version (recommended for production)
+- **`:2026.01`** - Latest release in January 2026 (auto-updates monthly)
+- **`:2026`** - Latest release in 2026 (auto-updates yearly)
+
+**Production Recommendation**: Pin to a specific version for reproducibility:
+
+```bash
+docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28
+```
+
+**Development/Testing**: Use `latest` for automatic updates:
+
+```bash
+docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+```
+
+### Checking Image Version
+
+To verify which version you're running:
+
+```bash
+docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+  jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
+```
+
+For more details on versioning, see [Versioning and Release Process](versioning-and-releases.md).
+
 ## Basic Usage
 
 ### Default Configuration

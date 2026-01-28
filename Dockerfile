@@ -1,5 +1,21 @@
 FROM python:3.12-slim
 
+# Build arguments for version information
+ARG VERSION
+ARG BUILD_DATE
+ARG VCS_REF
+
+# OCI image labels
+LABEL org.opencontainers.image.title="Binardat SSH Enabler"
+LABEL org.opencontainers.image.description="Enable SSH on Binardat switches via web interface automation"
+LABEL org.opencontainers.image.version="${VERSION}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.revision="${VCS_REF}"
+LABEL org.opencontainers.image.source="https://github.com/bmcdonough/binardat-switch-config"
+LABEL org.opencontainers.image.url="https://github.com/bmcdonough/binardat-switch-config"
+LABEL org.opencontainers.image.vendor="bmcdonough"
+LABEL org.opencontainers.image.licenses="MIT"
+
 # Install Chromium and ChromeDriver
 RUN apt-get update && apt-get install -y --no-install-recommends \
     chromium chromium-driver \
@@ -9,14 +25,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV CHROME_BIN=/usr/bin/chromium \
     CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
-# Install Python dependencies
+# Install package
 WORKDIR /app
-COPY requirements-docker.txt .
-RUN pip install --no-cache-dir -r requirements-docker.txt
-
-# Copy application code
-COPY src/enable_ssh.py .
-COPY src/rc4_crypto.py .
+COPY src/ /app/src/
+COPY pyproject.toml VERSION README.md LICENSE /app/
+RUN pip install --no-cache-dir /app
 
 # Create non-root user
 RUN useradd -m -u 1000 switchuser && \
@@ -30,4 +43,4 @@ ENV SWITCH_IP=192.168.2.1 \
     SWITCH_SSH_PORT=22 \
     TIMEOUT=10
 
-ENTRYPOINT ["python", "enable_ssh.py"]
+ENTRYPOINT ["binardat-config"]

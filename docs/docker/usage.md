@@ -4,6 +4,7 @@ Comprehensive guide for using the Binardat SSH Enabler Docker image.
 
 ## Table of Contents
 
+- [Version Management](#version-management)
 - [Configuration Methods](#configuration-methods)
 - [Runtime Configuration](#runtime-configuration)
 - [Docker Networking](#docker-networking)
@@ -11,6 +12,87 @@ Comprehensive guide for using the Binardat SSH Enabler Docker image.
 - [Multi-Switch Workflows](#multi-switch-workflows)
 - [Docker Compose](#docker-compose)
 - [Advanced Usage](#advanced-usage)
+
+## Version Management
+
+### Docker Image Tags
+
+The `binardat-ssh-enabler` image is published with multiple tags to support different use cases:
+
+| Tag | Description | Stability | Use Case |
+|-----|-------------|-----------|----------|
+| `v2026.01.28` | Specific version | Immutable | Production (recommended) |
+| `2026.01` | Month alias | Updates monthly | Track monthly releases |
+| `2026` | Year alias | Updates yearly | Track yearly releases |
+| `latest` | Latest stable | Updates on release | Development and testing |
+| `rc` | Release candidate | Pre-release | Testing new features |
+
+### Production Best Practices
+
+**Always pin to specific versions in production**:
+
+```bash
+# Good - Specific version (reproducible)
+docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28
+
+# Avoid - Latest tag (can change unexpectedly)
+docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+```
+
+**Docker Compose with specific version**:
+
+```yaml
+version: '3.8'
+services:
+  ssh-enabler:
+    image: ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28  # Pinned version
+    environment:
+      - SWITCH_IP=192.168.2.1
+    network_mode: host
+```
+
+### Development Workflows
+
+For development and testing, using `latest` is acceptable:
+
+```bash
+# Development - Use latest tag
+docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+```
+
+### Version Verification
+
+Check which version is currently running:
+
+```bash
+# Check image version label
+docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+  jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
+
+# Check image creation date
+docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+  jq -r '.[0].Config.Labels."org.opencontainers.image.created"'
+
+# View all image labels
+docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+  jq '.[0].Config.Labels'
+```
+
+### Upgrading Versions
+
+To upgrade to a newer version:
+
+```bash
+# Pull the new version
+docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.02.15
+
+# Update your docker-compose.yml or run command with new version
+docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.02.15
+```
+
+**Note**: The `:latest` tag updates automatically on pull, so always specify versions explicitly if reproducibility is important.
+
+For complete versioning documentation, see [Versioning and Release Process](versioning-and-releases.md).
 
 ## Configuration Methods
 

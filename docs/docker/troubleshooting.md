@@ -4,6 +4,7 @@ Solutions for common issues when using the Binardat SSH Enabler Docker image.
 
 ## Table of Contents
 
+- [Version Issues](#version-issues)
 - [Connection Issues](#connection-issues)
 - [Authentication Problems](#authentication-problems)
 - [Docker-Specific Issues](#docker-specific-issues)
@@ -11,6 +12,116 @@ Solutions for common issues when using the Binardat SSH Enabler Docker image.
 - [SSH Port Issues](#ssh-port-issues)
 - [Network Problems](#network-problems)
 - [Debugging Techniques](#debugging-techniques)
+
+## Version Issues
+
+### Wrong Version Running
+
+**Symptom**:
+You expected a newer version but an older version is running.
+
+**Solutions**:
+
+1. **Check current version**:
+   ```bash
+   docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+     jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
+   ```
+
+2. **Force pull latest image**:
+   ```bash
+   docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   ```
+
+3. **Remove old images and pull fresh**:
+   ```bash
+   # Remove all binardat-ssh-enabler images
+   docker images | grep binardat-ssh-enabler | awk '{print $3}' | xargs docker rmi -f
+
+   # Pull fresh image
+   docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   ```
+
+4. **Use specific version tag** (recommended for production):
+   ```bash
+   docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28
+   ```
+
+### Docker Image Cache Issues
+
+**Symptom**:
+Changes not reflected even after pulling new image.
+
+**Solutions**:
+
+1. **Check image ID and creation date**:
+   ```bash
+   docker images ghcr.io/bmcdonough/binardat-ssh-enabler
+   ```
+
+2. **Prune Docker cache**:
+   ```bash
+   docker system prune -a
+   docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   ```
+
+3. **Run with `--pull always`**:
+   ```bash
+   docker run --pull always --network host \
+     ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   ```
+
+### Version Mismatch Between Documentation and Image
+
+**Symptom**:
+Documentation references features not available in your image version.
+
+**Solutions**:
+
+1. **Check image creation date**:
+   ```bash
+   docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+     jq -r '.[0].Config.Labels."org.opencontainers.image.created"'
+   ```
+
+2. **Check repository for version compatibility**:
+   - Visit [CHANGELOG](CHANGELOG.md) to see when features were added
+   - Ensure you're using a version that includes the desired features
+
+3. **Pull specific version matching documentation**:
+   ```bash
+   # Example: Pull version 2026.01.28
+   docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28
+   ```
+
+### Unexpected Behavior After Upgrade
+
+**Symptom**:
+Container behavior changed after pulling `:latest` tag.
+
+**Solutions**:
+
+1. **Identify what changed**:
+   ```bash
+   # Check CHANGELOG for recent changes
+   curl https://raw.githubusercontent.com/bmcdonough/binardat-switch-config/main/CHANGELOG.md
+   ```
+
+2. **Rollback to previous version**:
+   ```bash
+   # Use a specific older version
+   docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.27
+   ```
+
+3. **Pin to specific version** (prevent future auto-updates):
+   ```yaml
+   # In docker-compose.yml
+   services:
+     ssh-enabler:
+       image: ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28  # Pinned
+   ```
+
+For more on version management, see [Versioning and Release Process](versioning-and-releases.md).
 
 ## Connection Issues
 

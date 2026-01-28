@@ -8,7 +8,34 @@ This is a Python-based tool for configuring Binardat brand network switches from
 
 ## Versioning
 
-This project uses date-based versioning in the format `YYYY.MM.DD` (similar to certifi).
+This project uses calendar versioning (CalVer) in the format `YYYY.MM.DD[.MICRO]`.
+
+### Version Management
+
+- **VERSION file**: Single source of truth for the current version (located at repository root)
+- **Git tags**: Tagged with `v` prefix (e.g., `v2026.01.28`)
+- **CHANGELOG.md**: All changes MUST be documented in `/CHANGELOG.md` at the repository root
+  - Follow [Keep a Changelog](https://keepachangelog.com/) format
+  - Add entries under `[Unreleased]` during development
+  - Move to version section when releasing
+
+### Documenting Changes
+
+**IMPORTANT**: All code changes, features, bug fixes, and breaking changes MUST be documented in `/CHANGELOG.md`.
+
+When making changes:
+1. Add entry under `[Unreleased]` section in appropriate category:
+   - `### Added` - New features
+   - `### Changed` - Changes to existing functionality
+   - `### Deprecated` - Soon-to-be removed features
+   - `### Removed` - Removed features
+   - `### Fixed` - Bug fixes
+   - `### Security` - Security improvements
+
+2. Use clear, user-facing language describing the change
+3. When creating a release, move `[Unreleased]` entries to a new version section
+
+For complete versioning documentation, see [docs/docker/versioning-and-releases.md](docs/docker/versioning-and-releases.md).
 
 ## Project Structure
 
@@ -33,13 +60,40 @@ binardat-switch-config/
 - Forces proper installation of the package for testing
 - Standard modern Python practice
 
-## Expected Architecture
+## Current Package Structure
 
-Based on the project goals, the codebase will likely include:
+The package currently implements SSH enablement functionality:
 
-- **Switch Communication Layer** (`src/binardat_switch_config/connection/`) - Code to connect to and communicate with Binardat switches (likely via SSH, Telnet, or HTTP API)
+```
+src/binardat_switch_config/
+├── __init__.py           # Package initialization, version management
+├── cli.py                # CLI entry point and argument parsing
+└── ssh_enabler.py        # SSHEnabler class and utilities
+```
+
+**Version Management:**
+- Version is read from `/VERSION` file at runtime
+- Exposed as `binardat_switch_config.__version__`
+- Also specified in `pyproject.toml` (keep in sync during releases)
+
+**CLI Entry Point:**
+- Command: `binardat-config` (installed via console_scripts)
+- Entry point: `binardat_switch_config.cli:main`
+- Maintains same CLI arguments as original script
+
+**Modules:**
+- `__init__.py` - Package initialization with version loading and public API exports
+- `cli.py` - Command-line interface using argparse, signal handling, and environment variable support
+- `ssh_enabler.py` - Core SSHEnabler class using Selenium for web automation
+
+**Future modules** will be added to `src/binardat_switch_config/` as needed.
+
+## Expected Future Architecture
+
+Based on the project goals, additional modules may include:
+
+- **Switch Communication Layer** (`src/binardat_switch_config/connection/`) - Direct SSH/Telnet/HTTP API communication
 - **Configuration Management** (`src/binardat_switch_config/config/`) - Parsing and applying switch configuration settings
-- **CLI Interface** (`src/binardat_switch_config/cli.py`) - Command-line tool for running configuration operations
 
 ## Development Environment
 

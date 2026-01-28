@@ -31,6 +31,58 @@ When factory reset, the switch defaults to:
   - [Amazon Product Page](https://www.amazon.com/dp/B0D97B1V5R)
   - [Binardat Product Page](https://www.binardat.com/products/20-port-25g-web-managed-switch,-16x25g-ethernet,-4x10-gigabit-sfp-ports,-web-cli-l3-managed,-metal-multi-gigabit-desktop-rackmount-network-switch-1)
 
+## Installation
+
+### From Source
+
+Clone the repository and install the package:
+
+```bash
+git clone https://github.com/bmcdonough/binardat-switch-config.git
+cd binardat-switch-config
+pip install -e .
+```
+
+### Using the CLI
+
+After installation, use the `binardat-config` command:
+
+```bash
+# Enable SSH on switch with defaults (192.168.2.1, admin/admin)
+binardat-config
+
+# Custom switch IP
+binardat-config --switch-ip 192.168.1.100
+
+# Custom credentials
+binardat-config --switch-ip 192.168.1.100 --username myadmin --password mypass
+
+# Show version
+binardat-config --version
+
+# Show help
+binardat-config --help
+```
+
+### Using as a Library
+
+You can also use the package programmatically in your Python code:
+
+```python
+from binardat_switch_config import SSHEnabler
+
+enabler = SSHEnabler(headless=True, timeout=10)
+success = enabler.enable_ssh(
+    switch_ip="192.168.2.1",
+    username="admin",
+    password="admin",
+    port=22
+)
+
+if success:
+    print("SSH enabled successfully!")
+```
+
 ## Docker Quick Start
 
 The fastest way to enable SSH on your Binardat switch is using Docker:
@@ -90,4 +142,21 @@ Contributions are welcome! Please ensure:
 
 ## Versioning
 
-This project uses date-based versioning: `YYYY.MM.DD`
+This project uses calendar versioning (CalVer): `YYYY.MM.DD[.MICRO]`
+
+**Current Version**: 2026.01.28
+
+**Version History**: See [CHANGELOG](CHANGELOG.md)
+
+### Docker Image Tags
+
+Multiple tags are available for different use cases:
+
+- **Specific version**: `ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28` (recommended for production)
+- **Latest stable**: `ghcr.io/bmcdonough/binardat-ssh-enabler:latest`
+- **Month alias**: `ghcr.io/bmcdonough/binardat-ssh-enabler:2026.01`
+- **Year alias**: `ghcr.io/bmcdonough/binardat-ssh-enabler:2026`
+
+**Production recommendation**: Always pin to specific version tag to ensure reproducibility.
+
+For detailed versioning information, see [Versioning and Release Process](docs/docker/versioning-and-releases.md)

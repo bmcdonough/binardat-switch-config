@@ -1,0 +1,84 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "binardat-switch-config"
+version = "2026.01.28"
+description = "Python library for configuring Binardat brand network switches"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "bmcdonough"}
+]
+keywords = ["binardat", "switch", "network", "configuration", "automation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Networking",
+]
+
+dependencies = [
+    "selenium>=4.16.0",
+    "beautifulsoup4>=4.12.0",
+    "pycryptodome>=3.19.0",
+    "pyyaml>=6.0",
+    "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.7.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.4.0",
+    "pydocstyle>=6.3.0",
+    "pre-commit>=3.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/bmcdonough/binardat-switch-config"
+Repository = "https://github.com/bmcdonough/binardat-switch-config"
+Documentation = "https://github.com/bmcdonough/binardat-switch-config/docs"
+Changelog = "https://github.com/bmcdonough/binardat-switch-config/CHANGELOG.md"
+
+[project.scripts]
+binardat-config = "binardat_switch_config.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 79
+target-version = ["py39"]
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "--strict-markers --cov=binardat_switch_config"
+
+[tool.pydocstyle]
+convention = "google"
+add-ignore = ["D100", "D104"]
