@@ -1,45 +1,43 @@
 # Changelog
 
-All notable changes to binardat-ssh-enabler Docker image are documented in this file.
+All notable changes to the Binardat Switch Configuration tool are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### Added
-- Python package structure with proper src-layout
-- CLI entry point via `binardat-config` command
-- Version management from VERSION file in `__init__.py`
-- `pyproject.toml` for modern Python packaging
-- `--version` flag to display package version
-
-### Changed
-- **BREAKING**: Standalone `enable_ssh.py` script replaced with proper Python package
-- **BREAKING**: Direct script execution `python enable_ssh.py` no longer supported - install package first
-- Refactored code into modular structure: `cli.py`, `ssh_enabler.py`, `__init__.py`
-- Docker image now installs package instead of copying scripts
-- Docker entry point uses `binardat-config` CLI command
-- CLI interface remains backward compatible (same arguments and behavior)
-
-### Removed
-- Standalone `src/enable_ssh.py` script (replaced by package modules)
-- Reference to non-existent `rc4_crypto.py` from Dockerfile
-
-### Fixed
-- Dockerfile now correctly installs all dependencies via package instead of requirements file
-
 ## [2026.01.28] - 2026-01-28
 
+Initial release of the Binardat Switch Configuration tool.
+
 ### Added
-- Initial Docker image for SSH enablement on Binardat switches
+- Python package structure with proper src-layout following modern best practices
+- CLI entry point via `binardat-config` command
+- Version management system using VERSION file
+- Modern Python packaging with `pyproject.toml`
 - Selenium-based web automation for switch configuration
-- Environment variable configuration support
+- SSH enablement functionality for Binardat switches
+- Environment variable configuration support (`SWITCH_IP`, `SWITCH_USERNAME`, `SWITCH_PASSWORD`)
+- CLI arguments: `--ip`, `--username`, `--password`, `--version`
 - Default credentials support (192.168.2.1, admin/admin)
-- Chrome headless browser automation
-- Non-root user security (switchuser:1000)
+- Docker container support with Chrome headless browser
+- Non-root user security in Docker (switchuser:1000)
+- Comprehensive code quality tooling:
+  - black (code formatting)
+  - isort (import sorting)
+  - flake8 (linting)
+  - mypy (static type checking)
+  - pydocstyle (docstring validation with Google style)
+  - pre-commit hooks
+- GitHub Actions CI/CD pipeline
+  - Linting checks (isort, black, flake8, mypy)
+  - Test suite across Python 3.9, 3.10, 3.11, and 3.12
+  - Coverage reporting via Codecov
 
 ### Documentation
+- Comprehensive README with installation and usage instructions
+- CLAUDE.md with development guidelines and architecture overview
 - Docker quick start guide
-- Comprehensive usage guide
+- Detailed usage guide
 - Troubleshooting guide
-- Development setup documentation
+- Versioning and release documentation

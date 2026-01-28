@@ -136,18 +136,42 @@ git push origin v2026.01.28
 ### Branch Strategy
 
 **Main branches**:
-- `main` - Production-ready code, source for tagged releases
+- `main` - Production-ready code, source for tagged releases. Protected, requires PR for changes.
 - `develop` - Integration branch for features (optional)
 - `feature/*` - Feature development branches
-- `hotfix/*` - Emergency fixes for production
+- `release/*` - Release preparation branches (named `release/vYYYY.MM.DD`)
+- `hotfix/*` - Emergency fixes for production (named `hotfix/vYYYY.MM.DD.MICRO`)
 
 **Release workflow**:
 1. Develop features on `feature/*` branches
-2. Merge features into `develop` (or directly to `main`)
-3. When ready to release, ensure `main` has all changes
-4. Tag `main` with release version
-5. Build and push Docker images from tagged commit
-6. Merge any release changes back to `develop`
+2. Merge features into `develop` (or directly to `main` via PR)
+3. When ready to release:
+   - Create GitHub issue for release tracking
+   - Create `release/vYYYY.MM.DD` branch from `main`
+   - Update VERSION and CHANGELOG on release branch
+   - Create PR from release branch to `main`, referencing issue
+   - Review and merge PR (this closes the issue automatically)
+   - Tag `main` with release version
+   - Build and push Docker images from tagged commit
+   - Delete release branch (done automatically by PR merge)
+4. Merge any release changes back to `develop` if using separate develop branch
+
+**Hotfix workflow**:
+1. Create GitHub issue for hotfix tracking
+2. Create `hotfix/vYYYY.MM.DD.MICRO` branch from `main`
+3. Apply fix and update VERSION/CHANGELOG on hotfix branch
+4. Create PR from hotfix branch to `main`, referencing issue
+5. Fast-track review and merge (emergency process)
+6. Tag `main` with hotfix version
+7. Build and push Docker images
+8. Delete hotfix branch
+
+**Branch protection** (recommended for `main`):
+- Require pull request reviews before merging
+- Require status checks to pass (CI tests)
+- Require branches to be up to date before merging
+- Do not allow force pushes
+- Do not allow deletion
 
 ## Docker Image Tagging Strategy
 
@@ -208,36 +232,119 @@ docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:2026.01
 
 ## Release Process
 
-### Pre-Release Checklist
+### GitHub Issue and Branch Workflow
 
-Before creating a release, complete ALL items:
+All releases MUST follow this workflow to maintain traceability and proper code review:
 
-- [ ] All tests passing locally
-- [ ] Code review completed (if applicable)
-- [ ] Documentation updated (README, usage docs, etc.)
-- [ ] CHANGELOG.md updated with changes
-- [ ] VERSION file updated
-- [ ] No uncommitted changes (`git status` clean)
-- [ ] On correct branch (`main`)
-- [ ] Remote repository up to date (`git pull`)
+**Complete workflow overview:**
 
-### Manual Release Process (Step-by-Step)
+```
+1. Create Issue (#123: "Release v2026.01.28")
+              ↓
+2. Create Branch (release/v2026.01.28 from main)
+              ↓
+3. Make Changes (update VERSION, CHANGELOG)
+              ↓
+4. Push Branch (origin/release/v2026.01.28)
+              ↓
+5. Create PR (#45: release/v2026.01.28 → main, refs #123)
+              ↓
+6. Review & Approve PR
+              ↓
+7. Merge PR to main (closes #123, deletes release branch)
+              ↓
+8. Tag main (v2026.01.28)
+              ↓
+9. Build & Push Docker Images
+              ↓
+10. Create GitHub Release
+```
 
-#### Step 1: Prepare Release
+#### Step 0: Create GitHub Issue
+
+Before starting any release work, create a GitHub issue to track the release:
+
+```bash
+# Set version for this release
+export VERSION="2026.01.28"
+
+# Create issue using gh CLI
+gh issue create \
+  --title "Release v$VERSION" \
+  --body "Preparing release v$VERSION
+
+## Changes in this release:
+- [ ] Update VERSION file
+- [ ] Update CHANGELOG.md
+- [ ] Create release tag
+- [ ] Build and push Docker images
+- [ ] Create GitHub release
+
+## Testing:
+- [ ] All tests passing
+- [ ] Docker image tested locally
+- [ ] Documentation reviewed
+
+Closes this issue when merged." \
+  --label "release"
+
+# Save issue number for later
+export ISSUE_NUMBER=$(gh issue list --limit 1 --json number --jq '.[0].number')
+echo "Created issue #$ISSUE_NUMBER"
+```
+
+**Alternative (Manual via Web UI)**:
+1. Navigate to https://github.com/bmcdonough/binardat-switch-config/issues/new
+2. Title: `Release vYYYY.MM.DD`
+3. Add release checklist to body
+4. Apply `release` label
+5. Submit issue and note the issue number
+
+#### Step 1: Create Release Branch
+
+Create a new branch named after the version:
 
 ```bash
 # Ensure you're on main branch
 git checkout main
 git pull origin main
 
-# Set version for this release
-export VERSION="2026.01.28"
+# Create and switch to release branch
+git checkout -b release/v$VERSION
+
+# Push branch to remote (creates remote tracking)
+git push -u origin release/v$VERSION
+```
+
+**Branch naming convention**: `release/vYYYY.MM.DD` or `release/vYYYY.MM.DD.MICRO`
+
+### Pre-Release Checklist
+
+Before creating a release, complete ALL items:
+
+- [ ] GitHub issue created for release tracking
+- [ ] Release branch created (`release/vYYYY.MM.DD`)
+- [ ] All tests passing locally
+- [ ] Code review completed (if applicable)
+- [ ] Documentation updated (README, usage docs, etc.)
+- [ ] CHANGELOG.md updated with changes
+- [ ] VERSION file updated
+- [ ] No uncommitted changes on release branch (`git status` clean)
+- [ ] Remote repository up to date (`git pull`)
+
+### Manual Release Process (Step-by-Step)
+
+#### Step 2: Prepare Release on Branch
+
+```bash
+# Verify you're on the release branch
+git branch --show-current  # Should show: release/v2026.01.28
 
 # Verify no uncommitted changes
 git status
 ```
 
-#### Step 2: Update VERSION File
+#### Step 3: Update VERSION File
 
 ```bash
 # Update VERSION file
@@ -245,10 +352,12 @@ echo "$VERSION" > VERSION
 
 # Commit version bump
 git add VERSION
-git commit -m "Bump version to $VERSION"
+git commit -m "Bump version to $VERSION
+
+Refs #$ISSUE_NUMBER"
 ```
 
-#### Step 3: Update CHANGELOG
+#### Step 4: Update CHANGELOG
 
 Edit `CHANGELOG.md`:
 
@@ -272,24 +381,116 @@ Commit changes:
 
 ```bash
 git add CHANGELOG.md
-git commit -m "Update CHANGELOG for v$VERSION"
+git commit -m "Update CHANGELOG for v$VERSION
+
+Refs #$ISSUE_NUMBER"
 ```
 
-#### Step 4: Create Git Tag
+#### Step 5: Push Release Branch
 
 ```bash
+# Push all commits on release branch
+git push origin release/v$VERSION
+```
+
+#### Step 6: Create Pull Request
+
+```bash
+# Create PR using gh CLI, referencing the issue
+gh pr create \
+  --base main \
+  --head release/v$VERSION \
+  --title "Release v$VERSION" \
+  --body "Prepares release v$VERSION
+
+## Summary
+This PR prepares the v$VERSION release with the following changes:
+- Updated VERSION file to $VERSION
+- Updated CHANGELOG.md with release notes
+- All tests passing
+- Documentation reviewed
+
+## Release Checklist
+- [x] VERSION file updated
+- [x] CHANGELOG.md updated
+- [ ] Code review completed
+- [ ] Ready to merge and tag
+
+Closes #$ISSUE_NUMBER" \
+  --label "release"
+
+# Save PR number for reference
+export PR_NUMBER=$(gh pr list --head release/v$VERSION --json number --jq '.[0].number')
+echo "Created PR #$PR_NUMBER"
+```
+
+**Alternative (Manual via Web UI)**:
+1. Navigate to https://github.com/bmcdonough/binardat-switch-config/pulls
+2. Click "New pull request"
+3. Base: `main`, Compare: `release/vYYYY.MM.DD`
+4. Title: `Release vYYYY.MM.DD`
+5. Body: Include summary and reference issue with `Closes #<issue-number>`
+6. Apply `release` label
+7. Create pull request
+
+#### Step 7: Code Review and Approval
+
+```bash
+# Request review (optional, if working with team)
+gh pr review $PR_NUMBER --approve --body "Release approved"
+
+# Or wait for team member review via GitHub UI
+```
+
+**If changes are requested:**
+```bash
+# Make changes on release branch
+git checkout release/v$VERSION
+# ... make fixes ...
+git add .
+git commit -m "Address PR feedback
+
+Refs #$ISSUE_NUMBER"
+git push origin release/v$VERSION
+# PR will automatically update
+```
+
+#### Step 8: Merge Pull Request
+
+```bash
+# Merge PR using squash or merge commit (not rebase for releases)
+gh pr merge $PR_NUMBER \
+  --merge \
+  --delete-branch \
+  --body "Merged release v$VERSION"
+
+# Pull merged changes to local main
+git checkout main
+git pull origin main
+```
+
+**Note**: Use `--merge` (not `--squash`) to preserve the commit history for the release.
+
+#### Step 9: Create Git Tag
+
+After the PR is merged to main:
+
+```bash
+# Ensure you're on main with latest changes
+git checkout main
+git pull origin main
+
 # Create annotated tag with release notes
 git tag -a v$VERSION -m "Release v$VERSION
 
 $(git log --pretty=format:'- %s' --since='1 week ago' HEAD)
 "
 
-# Push commits and tag
-git push origin main
+# Push tag to remote
 git push origin v$VERSION
 ```
 
-#### Step 5: Build Docker Image
+#### Step 10: Build Docker Image
 
 ```bash
 # Build image with version information and multiple tags
@@ -304,7 +505,7 @@ docker build \
   .
 ```
 
-#### Step 6: Test Docker Image
+#### Step 11: Test Docker Image
 
 ```bash
 # Test with default settings (use a test switch or dry-run mode)
@@ -315,7 +516,7 @@ docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION | \
   jq '.[0].Config.Labels'
 ```
 
-#### Step 7: Push Docker Image
+#### Step 12: Push Docker Image
 
 ```bash
 # Login to GitHub Container Registry (if not already logged in)
@@ -329,7 +530,7 @@ docker push ghcr.io/bmcdonough/binardat-ssh-enabler:$(echo $VERSION | cut -d. -f
 docker push ghcr.io/bmcdonough/binardat-ssh-enabler:$(echo $VERSION | cut -d. -f1)
 ```
 
-#### Step 8: Create GitHub Release
+#### Step 13: Create GitHub Release
 
 ```bash
 # Using gh CLI (install: https://cli.github.com/)
@@ -342,7 +543,15 @@ gh release create v$VERSION \
 # https://github.com/bmcdonough/binardat-switch-config/releases/new
 ```
 
-#### Step 9: Announce Release
+#### Step 14: Verify and Announce
+
+```bash
+# Verify issue was automatically closed
+gh issue view $ISSUE_NUMBER
+
+# Verify PR was merged and branch deleted
+gh pr view $PR_NUMBER
+```
 
 - Update README.md if needed with latest version reference
 - Post announcement in project discussions/forums
@@ -350,42 +559,134 @@ gh release create v$VERSION \
 
 ### Hotfix Process (Emergency Releases)
 
-For critical bugs in production:
+For critical bugs in production, follow the same issue/branch/PR workflow with expedited review:
+
+#### Hotfix Step 1: Create Hotfix Issue
+
+```bash
+# Set hotfix version (increment micro version)
+export VERSION="2026.01.28.1"
+
+# Create hotfix issue
+gh issue create \
+  --title "Hotfix v$VERSION - Critical Bug" \
+  --body "**CRITICAL**: Hotfix for production issue
+
+## Problem
+Describe the critical issue requiring immediate fix
+
+## Solution
+Describe the fix being applied
+
+## Impact
+- Users affected:
+- Severity: Critical
+- Workaround: None
+
+Closes this issue when merged." \
+  --label "hotfix" \
+  --label "priority:critical"
+
+export ISSUE_NUMBER=$(gh issue list --limit 1 --json number --jq '.[0].number')
+```
+
+#### Hotfix Step 2: Create Hotfix Branch
 
 ```bash
 # Start from main branch
 git checkout main
 git pull origin main
 
-# Set hotfix version (increment micro version)
-export VERSION="2026.01.28.1"
-
-# Create hotfix branch (optional, for complex fixes)
+# Create hotfix branch
 git checkout -b hotfix/v$VERSION
+git push -u origin hotfix/v$VERSION
+```
 
+#### Hotfix Step 3: Apply Fix
+
+```bash
 # Make fixes and commit changes
 # ... fix the bug ...
 git add .
-git commit -m "Fix critical issue in SSH enablement"
+git commit -m "Fix critical issue in SSH enablement
+
+Refs #$ISSUE_NUMBER"
 
 # Update VERSION and CHANGELOG
 echo "$VERSION" > VERSION
-# Edit CHANGELOG.md to add hotfix entry
+
+# Edit CHANGELOG.md to add hotfix entry:
+# ## [2026.01.28.1] - 2026-01-28
+# ### Fixed
+# - Critical bug in SSH enablement causing X
+
 git add VERSION CHANGELOG.md
-git commit -m "Bump version to $VERSION (hotfix)"
+git commit -m "Bump version to $VERSION (hotfix)
 
-# Merge to main (if using hotfix branch)
+Refs #$ISSUE_NUMBER"
+
+# Push hotfix branch
+git push origin hotfix/v$VERSION
+```
+
+#### Hotfix Step 4: Create Hotfix PR
+
+```bash
+# Create PR with expedited review
+gh pr create \
+  --base main \
+  --head hotfix/v$VERSION \
+  --title "Hotfix v$VERSION - Critical Bug" \
+  --body "**CRITICAL HOTFIX** for production issue
+
+## Problem
+[Describe the critical issue]
+
+## Solution
+[Describe the fix]
+
+## Testing
+- [ ] Bug reproduced and confirmed fixed
+- [ ] No regressions in related functionality
+- [ ] Ready for immediate deployment
+
+Closes #$ISSUE_NUMBER" \
+  --label "hotfix" \
+  --label "priority:critical"
+
+export PR_NUMBER=$(gh pr list --head hotfix/v$VERSION --json number --jq '.[0].number')
+```
+
+#### Hotfix Step 5: Fast-Track Review and Merge
+
+```bash
+# Self-approve if you have permissions (emergency only)
+gh pr review $PR_NUMBER --approve --body "Emergency hotfix approved"
+
+# Merge immediately
+gh pr merge $PR_NUMBER \
+  --merge \
+  --delete-branch
+
+# Pull merged changes
 git checkout main
-git merge --no-ff hotfix/v$VERSION
+git pull origin main
+```
 
+#### Hotfix Step 6: Tag and Release
+
+```bash
 # Create tag
-git tag -a v$VERSION -m "Hotfix v$VERSION - Critical bugfix"
+git tag -a v$VERSION -m "Hotfix v$VERSION - Critical bugfix
 
-# Push to remote
-git push origin main
+Fixes critical issue in SSH enablement.
+
+Closes #$ISSUE_NUMBER"
+
+# Push tag
 git push origin v$VERSION
 
-# Build and push Docker image (same as Steps 5-7)
+# Build and push Docker image (same as Steps 10-12)
 docker build \
   --build-arg VERSION="v$VERSION" \
   --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
@@ -400,12 +701,29 @@ docker push ghcr.io/bmcdonough/binardat-ssh-enabler:latest
 # Create GitHub release
 gh release create v$VERSION \
   --title "Hotfix v$VERSION" \
-  --notes "Critical bug fix" \
+  --notes "Critical bug fix - see #$ISSUE_NUMBER for details" \
   --latest
-
-# Clean up (if using hotfix branch)
-git branch -d hotfix/v$VERSION
 ```
+
+#### Hotfix Step 7: Notify Users
+
+```bash
+# Add comment to original issue with resolution
+gh issue comment $ISSUE_NUMBER \
+  --body "Hotfix v$VERSION has been released and deployed.
+
+Users can pull the latest image:
+\`\`\`bash
+docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+\`\`\`
+
+Or pin to this specific hotfix:
+\`\`\`bash
+docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION
+\`\`\`"
+```
+
+Post announcement in appropriate channels about the critical fix.
 
 ## CI/CD Automation (Future)
 
@@ -484,6 +802,26 @@ When rolling back:
 
 ## FAQ
 
+### Q: Why do we need issues and PRs for releases?
+
+**A**: The issue/branch/PR workflow provides:
+- **Traceability**: Every release has a linked issue documenting what changed and why
+- **Review**: Even releases benefit from a review step to catch errors in version numbers, changelogs, or documentation
+- **Audit trail**: GitHub maintains a complete history of who approved and merged each release
+- **Automation**: Issues can trigger workflows, and closing syntax (`Closes #123`) automatically links PRs to issues
+- **Rollback information**: If a release needs rollback, the issue/PR history helps understand what went wrong
+
+For solo projects, you can self-approve and merge immediately. For team projects, this ensures proper review.
+
+### Q: What's the branch naming convention?
+
+**A**:
+- **Releases**: `release/vYYYY.MM.DD` (e.g., `release/v2026.01.28`)
+- **Hotfixes**: `hotfix/vYYYY.MM.DD.MICRO` (e.g., `hotfix/v2026.01.28.1`)
+- **Features**: `feature/description` (e.g., `feature/add-vlan-support`)
+
+Always use the `v` prefix in branch names for releases and hotfixes to match the Git tag format. This makes it clear that the branch is for a specific version release.
+
 ### Q: Why CalVer instead of SemVer?
 
 **A**: This is a utility tool, not a library. Users care about "when was this released?" more than "is this API-compatible?". CalVer provides immediate chronological context. SemVer is designed for libraries with API contracts - major/minor/patch indicates breaking changes, new features, and bugfixes. For a standalone Docker image that enables SSH, CalVer is more appropriate and user-friendly.
@@ -548,15 +886,44 @@ docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
   jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
 ```
 
-### Create Release
+### Create Release (Full Workflow)
 
 ```bash
+# Set version
 export VERSION="YYYY.MM.DD"
+
+# Create issue
+gh issue create --title "Release v$VERSION" --label "release"
+export ISSUE_NUMBER=$(gh issue list --limit 1 --json number --jq '.[0].number')
+
+# Create release branch
+git checkout main && git pull origin main
+git checkout -b release/v$VERSION
+git push -u origin release/v$VERSION
+
+# Update version and changelog
 echo "$VERSION" > VERSION
 git add VERSION
-git commit -m "Bump version to $VERSION"
+git commit -m "Bump version to $VERSION\n\nRefs #$ISSUE_NUMBER"
+# Edit CHANGELOG.md
+git add CHANGELOG.md
+git commit -m "Update CHANGELOG for v$VERSION\n\nRefs #$ISSUE_NUMBER"
+git push origin release/v$VERSION
+
+# Create PR
+gh pr create --base main --head release/v$VERSION \
+  --title "Release v$VERSION" \
+  --body "Closes #$ISSUE_NUMBER" \
+  --label "release"
+export PR_NUMBER=$(gh pr list --head release/v$VERSION --json number --jq '.[0].number')
+
+# Review and merge
+gh pr merge $PR_NUMBER --merge --delete-branch
+
+# Tag and push
+git checkout main && git pull origin main
 git tag -a v$VERSION -m "Release v$VERSION"
-git push origin main v$VERSION
+git push origin v$VERSION
 ```
 
 ### Build Docker Image
