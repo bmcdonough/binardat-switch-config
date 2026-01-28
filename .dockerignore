@@ -26,7 +26,6 @@ dist/
 htmlcov/
 *.md
 !README.md
-!README-SSH.md
 .gitignore
 .pre-commit-config.yaml
 requirements.txt
