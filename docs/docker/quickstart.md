@@ -6,12 +6,12 @@ Enable SSH on your Binardat switch in seconds using Docker.
 
 ```bash
 # Run with default settings (192.168.2.1, admin/admin)
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest
 
 # Or with custom IP
 docker run --network host \
   -e SWITCH_IP=192.168.2.50 \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ## Prerequisites
@@ -34,13 +34,13 @@ Multiple image tags are available for different use cases:
 **Production Recommendation**: Pin to a specific version for reproducibility:
 
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28
 ```
 
 **Development/Testing**: Use `latest` for automatic updates:
 
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Checking Image Version
@@ -48,7 +48,7 @@ docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
 To verify which version you're running:
 
 ```bash
-docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+docker inspect ghcr.io/bmcdonough/binardat-switch-config:latest | \
   jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
 ```
 
@@ -67,7 +67,7 @@ The image comes pre-configured with common defaults:
 Simply run:
 
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Custom Switch IP
@@ -77,7 +77,7 @@ If your switch is at a different IP address:
 ```bash
 docker run --network host \
   -e SWITCH_IP=192.168.2.100 \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Custom Credentials
@@ -89,7 +89,7 @@ docker run --network host \
   -e SWITCH_IP=192.168.2.50 \
   -e SWITCH_USERNAME=myadmin \
   -e SWITCH_PASSWORD=mypassword \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Custom SSH Port
@@ -100,7 +100,7 @@ To enable SSH on a non-standard port:
 docker run --network host \
   -e SWITCH_IP=192.168.2.50 \
   -e SWITCH_SSH_PORT=2222 \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ## Building Locally
@@ -116,10 +116,10 @@ cd binardat-switch-config
 git checkout develop
 
 # Build the image
-docker build -t binardat-ssh-enabler:latest .
+docker build -t binardat-switch-config:latest .
 
 # Run it
-docker run --network host binardat-ssh-enabler:latest
+docker run --network host binardat-switch-config:latest
 ```
 
 ## Using Docker Compose
@@ -131,7 +131,7 @@ version: '3.8'
 
 services:
   ssh-enabler:
-    image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+    image: ghcr.io/bmcdonough/binardat-switch-config:latest
     environment:
       - SWITCH_IP=192.168.2.1
       - SWITCH_USERNAME=admin
@@ -169,7 +169,7 @@ SWITCH_SSH_PORT=22
 Run with the environment file:
 
 ```bash
-docker run --network host --env-file .env ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host --env-file .env ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ## Command-Line Arguments
@@ -177,7 +177,7 @@ docker run --network host --env-file .env ghcr.io/bmcdonough/binardat-ssh-enable
 You can also pass arguments directly (these override environment variables):
 
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest \
   --switch-ip 192.168.2.100 \
   --username admin \
   --password mypass
@@ -186,7 +186,7 @@ docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
 View all available options:
 
 ```bash
-docker run --rm ghcr.io/bmcdonough/binardat-ssh-enabler:latest --help
+docker run --rm ghcr.io/bmcdonough/binardat-switch-config:latest --help
 ```
 
 ## Verification
@@ -253,7 +253,7 @@ Verify your credentials are correct:
 docker run --network host \
   -e SWITCH_USERNAME=yourusername \
   -e SWITCH_PASSWORD=yourpassword \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### SSH port not accessible after enablement

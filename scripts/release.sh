@@ -90,15 +90,15 @@ docker build \
   --build-arg VERSION="v$VERSION" \
   --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
   --build-arg VCS_REF="$(git rev-parse HEAD)" \
-  --tag "ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION" \
-  --tag "ghcr.io/bmcdonough/binardat-ssh-enabler:latest" \
-  --tag "ghcr.io/bmcdonough/binardat-ssh-enabler:$YEAR_MONTH" \
-  --tag "ghcr.io/bmcdonough/binardat-ssh-enabler:$YEAR" \
+  --tag "ghcr.io/bmcdonough/binardat-switch-config:v$VERSION" \
+  --tag "ghcr.io/bmcdonough/binardat-switch-config:latest" \
+  --tag "ghcr.io/bmcdonough/binardat-switch-config:$YEAR_MONTH" \
+  --tag "ghcr.io/bmcdonough/binardat-switch-config:$YEAR" \
   .
 
 # Verify image labels
 print_info "Verifying image labels..."
-IMAGE_VERSION=$(docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION | \
+IMAGE_VERSION=$(docker inspect ghcr.io/bmcdonough/binardat-switch-config:v$VERSION | \
   jq -r '.[0].Config.Labels."org.opencontainers.image.version"')
 
 if [ "$IMAGE_VERSION" = "v$VERSION" ]; then
@@ -125,13 +125,13 @@ echo "   ${YELLOW}git push origin main${NC}"
 echo "   ${YELLOW}git push origin v$VERSION${NC}"
 echo ""
 echo "4. Push Docker images to registry:"
-echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION${NC}"
-echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-ssh-enabler:latest${NC}"
-echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-ssh-enabler:$YEAR_MONTH${NC}"
-echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-ssh-enabler:$YEAR${NC}"
+echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-switch-config:v$VERSION${NC}"
+echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-switch-config:latest${NC}"
+echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-switch-config:$YEAR_MONTH${NC}"
+echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-switch-config:$YEAR${NC}"
 echo ""
 echo "5. Create GitHub release:"
 echo "   ${YELLOW}gh release create v$VERSION --title \"Release v$VERSION\" --latest${NC}"
 echo ""
 echo "Or push all tags at once:"
-echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-ssh-enabler --all-tags${NC}"
+echo "   ${YELLOW}docker push ghcr.io/bmcdonough/binardat-switch-config --all-tags${NC}"

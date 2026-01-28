@@ -24,27 +24,27 @@ You expected a newer version but an older version is running.
 
 1. **Check current version**:
    ```bash
-   docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+   docker inspect ghcr.io/bmcdonough/binardat-switch-config:latest | \
      jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
    ```
 
 2. **Force pull latest image**:
    ```bash
-   docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker pull ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 3. **Remove old images and pull fresh**:
    ```bash
-   # Remove all binardat-ssh-enabler images
-   docker images | grep binardat-ssh-enabler | awk '{print $3}' | xargs docker rmi -f
+   # Remove all binardat-switch-config images
+   docker images | grep binardat-switch-config | awk '{print $3}' | xargs docker rmi -f
 
    # Pull fresh image
-   docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker pull ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 4. **Use specific version tag** (recommended for production):
    ```bash
-   docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28
+   docker run --network host ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28
    ```
 
 ### Docker Image Cache Issues
@@ -56,19 +56,19 @@ Changes not reflected even after pulling new image.
 
 1. **Check image ID and creation date**:
    ```bash
-   docker images ghcr.io/bmcdonough/binardat-ssh-enabler
+   docker images ghcr.io/bmcdonough/binardat-switch-config
    ```
 
 2. **Prune Docker cache**:
    ```bash
    docker system prune -a
-   docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker pull ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 3. **Run with `--pull always`**:
    ```bash
    docker run --pull always --network host \
-     ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+     ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 ### Version Mismatch Between Documentation and Image
@@ -80,7 +80,7 @@ Documentation references features not available in your image version.
 
 1. **Check image creation date**:
    ```bash
-   docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+   docker inspect ghcr.io/bmcdonough/binardat-switch-config:latest | \
      jq -r '.[0].Config.Labels."org.opencontainers.image.created"'
    ```
 
@@ -91,7 +91,7 @@ Documentation references features not available in your image version.
 3. **Pull specific version matching documentation**:
    ```bash
    # Example: Pull version 2026.01.28
-   docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28
+   docker pull ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28
    ```
 
 ### Unexpected Behavior After Upgrade
@@ -110,7 +110,7 @@ Container behavior changed after pulling `:latest` tag.
 2. **Rollback to previous version**:
    ```bash
    # Use a specific older version
-   docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.27
+   docker run --network host ghcr.io/bmcdonough/binardat-switch-config:v2026.01.27
    ```
 
 3. **Pin to specific version** (prevent future auto-updates):
@@ -118,7 +118,7 @@ Container behavior changed after pulling `:latest` tag.
    # In docker-compose.yml
    services:
      ssh-enabler:
-       image: ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28  # Pinned
+       image: ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28  # Pinned
    ```
 
 For more on version management, see [Versioning and Release Process](versioning-and-releases.md).
@@ -138,7 +138,7 @@ Error: Connection refused
 1. **Verify network mode**:
    ```bash
    # Must use --network host
-   docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 2. **Check switch IP**:
@@ -149,7 +149,7 @@ Error: Connection refused
    # Verify switch is on correct IP
    docker run --network host \
      -e SWITCH_IP=192.168.2.100 \
-     ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+     ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 3. **Verify switch web interface is accessible**:
@@ -197,7 +197,7 @@ Error: Connection refused
    ```bash
    docker run --network host \
      -e TIMEOUT=30 \
-     ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+     ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 2. **Check switch is responding**:
@@ -230,7 +230,7 @@ Error: Connection refused
    # Escape special characters in passwords
    docker run --network host \
      -e SWITCH_PASSWORD='my$ecure!pass' \
-     ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+     ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 3. **Try default credentials**:
@@ -238,7 +238,7 @@ Error: Connection refused
    docker run --network host \
      -e SWITCH_USERNAME=admin \
      -e SWITCH_PASSWORD=admin \
-     ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+     ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 ### Password with Special Characters
@@ -254,19 +254,19 @@ Password not accepted, bash interpretation issues
    SWITCH_PASSWORD=my$pecial!pass@123
    ```
    ```bash
-   docker run --network host --env-file .env ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker run --network host --env-file .env ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 2. **Use single quotes** in command line:
    ```bash
    docker run --network host \
      -e SWITCH_PASSWORD='my$pecial!pass@123' \
-     ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+     ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 3. **Use command-line arguments**:
    ```bash
-   docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+   docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest \
      --password 'my$pecial!pass@123'
    ```
 
@@ -312,7 +312,7 @@ Container starts and exits without output
 
 2. **Run with --rm for automatic cleanup**:
    ```bash
-   docker run --rm --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker run --rm --network host ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 3. **Check for conflicting containers**:
@@ -361,19 +361,19 @@ This should not happen with the official image. If you see this:
 
 1. **Use official image**:
    ```bash
-   docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker pull ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 2. **Check CHROMEDRIVER_PATH**:
    ```bash
    docker run --network host \
      -e CHROMEDRIVER_PATH=/usr/bin/chromedriver \
-     ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+     ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 3. **Verify ChromeDriver in image**:
    ```bash
-   docker run --rm ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+   docker run --rm ghcr.io/bmcdonough/binardat-switch-config:latest \
      /bin/bash -c "which chromedriver"
    ```
 
@@ -389,7 +389,7 @@ session deleted because of page crash
 
 1. **Increase shared memory** (if not using --network host):
    ```bash
-   docker run --network host --shm-size=2g ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker run --network host --shm-size=2g ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 2. **Verify --no-sandbox flag** (already included in image)
@@ -413,7 +413,7 @@ TimeoutException: Message:
    ```bash
    docker run --network host \
      -e TIMEOUT=30 \
-     ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+     ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 2. **Check switch responsiveness**:
@@ -427,7 +427,7 @@ TimeoutException: Message:
    docker run --network host \
      -e DISPLAY=$DISPLAY \
      -v /tmp/.X11-unix:/tmp/.X11-unix \
-     ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+     ghcr.io/bmcdonough/binardat-switch-config:latest \
      --show-browser
    ```
 
@@ -544,7 +544,7 @@ Currently, the script outputs detailed progress. For even more detail:
 
 2. **Run with TTY**:
    ```bash
-   docker run -it --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker run -it --network host ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 ### Show Browser for Visual Debugging
@@ -559,7 +559,7 @@ xhost +local:docker
 docker run --network host \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+  ghcr.io/bmcdonough/binardat-switch-config:latest \
   --show-browser
 
 # Revoke X11 access after
@@ -573,7 +573,7 @@ If you've modified the code to save page source:
 ```bash
 docker run --network host \
   -v $(pwd)/debug:/debug \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Interactive Shell in Container
@@ -584,7 +584,7 @@ For advanced debugging:
 # Start container with shell
 docker run -it --network host \
   --entrypoint /bin/bash \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 
 # Inside container
 python enable_ssh.py --help
@@ -594,7 +594,7 @@ python enable_ssh.py --switch-ip 192.168.2.1
 ### Test Network Connectivity from Container
 
 ```bash
-docker run -it --network host --entrypoint /bin/bash ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run -it --network host --entrypoint /bin/bash ghcr.io/bmcdonough/binardat-switch-config:latest
 
 # Inside container
 apt-get update && apt-get install -y iputils-ping curl

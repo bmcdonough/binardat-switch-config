@@ -17,7 +17,7 @@ Comprehensive guide for using the Binardat SSH Enabler Docker image.
 
 ### Docker Image Tags
 
-The `binardat-ssh-enabler` image is published with multiple tags to support different use cases:
+The `binardat-switch-config` image is published with multiple tags to support different use cases:
 
 | Tag | Description | Stability | Use Case |
 |-----|-------------|-----------|----------|
@@ -33,10 +33,10 @@ The `binardat-ssh-enabler` image is published with multiple tags to support diff
 
 ```bash
 # Good - Specific version (reproducible)
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28
 
 # Avoid - Latest tag (can change unexpectedly)
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 **Docker Compose with specific version**:
@@ -45,7 +45,7 @@ docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
 version: '3.8'
 services:
   ssh-enabler:
-    image: ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28  # Pinned version
+    image: ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28  # Pinned version
     environment:
       - SWITCH_IP=192.168.2.1
     network_mode: host
@@ -57,7 +57,7 @@ For development and testing, using `latest` is acceptable:
 
 ```bash
 # Development - Use latest tag
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Version Verification
@@ -66,15 +66,15 @@ Check which version is currently running:
 
 ```bash
 # Check image version label
-docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+docker inspect ghcr.io/bmcdonough/binardat-switch-config:latest | \
   jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
 
 # Check image creation date
-docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+docker inspect ghcr.io/bmcdonough/binardat-switch-config:latest | \
   jq -r '.[0].Config.Labels."org.opencontainers.image.created"'
 
 # View all image labels
-docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+docker inspect ghcr.io/bmcdonough/binardat-switch-config:latest | \
   jq '.[0].Config.Labels'
 ```
 
@@ -84,10 +84,10 @@ To upgrade to a newer version:
 
 ```bash
 # Pull the new version
-docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.02.15
+docker pull ghcr.io/bmcdonough/binardat-switch-config:v2026.02.15
 
 # Update your docker-compose.yml or run command with new version
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.02.15
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:v2026.02.15
 ```
 
 **Note**: The `:latest` tag updates automatically on pull, so always specify versions explicitly if reproducibility is important.
@@ -103,7 +103,7 @@ The Docker image supports three configuration methods (in priority order):
 Arguments passed to the container override all other configuration:
 
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest \
   --switch-ip 192.168.2.100 \
   --username admin \
   --password mypassword \
@@ -135,7 +135,7 @@ docker run --network host \
   -e SWITCH_PASSWORD=mypassword \
   -e SWITCH_SSH_PORT=2222 \
   -e TIMEOUT=15 \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 Environment variables:
@@ -181,7 +181,7 @@ TIMEOUT=15
 Run with the environment file:
 
 ```bash
-docker run --network host --env-file .env ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host --env-file .env ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 **Security tip**: Always restrict environment file permissions:
@@ -206,7 +206,7 @@ docker service create \
   --secret switch_username \
   --secret switch_password \
   --network host \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Interactive Configuration
@@ -214,7 +214,7 @@ docker service create \
 Get help on available options:
 
 ```bash
-docker run --rm ghcr.io/bmcdonough/binardat-ssh-enabler:latest --help
+docker run --rm ghcr.io/bmcdonough/binardat-switch-config:latest --help
 ```
 
 ## Docker Networking
@@ -225,12 +225,12 @@ The container must access switches on your local network. Docker's default bridg
 
 **Required**:
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 **Will NOT work** (default bridge network):
 ```bash
-docker run ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run ghcr.io/bmcdonough/binardat-switch-config:latest
 # Error: Connection refused
 ```
 
@@ -263,14 +263,14 @@ If your switches are on a different subnet than your Docker host:
 # Bad practice
 docker run --network host \
   -e SWITCH_PASSWORD=SuperSecret123 \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 **DO** use environment files with restricted permissions:
 ```bash
 # Good practice
 chmod 600 .env
-docker run --network host --env-file .env ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host --env-file .env ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 **BEST** use Docker secrets in production:
@@ -287,7 +287,7 @@ The image follows security best practices:
 - **No SSH keys stored**: Credentials are runtime-only
 - **Read-only filesystem** compatible:
   ```bash
-  docker run --network host --read-only ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  docker run --network host --read-only ghcr.io/bmcdonough/binardat-switch-config:latest
   ```
 
 ### Network Security
@@ -319,7 +319,7 @@ while IFS= read -r switch_ip; do
     -e SWITCH_IP="$switch_ip" \
     -e SWITCH_USERNAME=admin \
     -e SWITCH_PASSWORD=admin \
-    ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+    ghcr.io/bmcdonough/binardat-switch-config:latest
 
   echo "Completed: $switch_ip"
   echo "---"
@@ -338,7 +338,7 @@ for switch in "${switches[@]}"; do
   docker run --network host \
     -e SWITCH_IP="$switch" \
     --env-file .env \
-    ghcr.io/bmcdonough/binardat-ssh-enabler:latest &
+    ghcr.io/bmcdonough/binardat-switch-config:latest &
 done
 
 # Wait for all background jobs to complete
@@ -369,7 +369,7 @@ tail -n +2 switches.csv | while IFS=, read -r ip username password port; do
     -e SWITCH_USERNAME="$username" \
     -e SWITCH_PASSWORD="$password" \
     -e SWITCH_SSH_PORT="$port" \
-    ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+    ghcr.io/bmcdonough/binardat-switch-config:latest
 done
 ```
 
@@ -384,7 +384,7 @@ version: '3.8'
 
 services:
   ssh-enabler:
-    image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+    image: ghcr.io/bmcdonough/binardat-switch-config:latest
     environment:
       - SWITCH_IP=192.168.2.1
       - SWITCH_USERNAME=admin
@@ -408,7 +408,7 @@ version: '3.8'
 
 services:
   ssh-enabler:
-    image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+    image: ghcr.io/bmcdonough/binardat-switch-config:latest
     env_file:
       - .env
     network_mode: host
@@ -431,7 +431,7 @@ version: '3.8'
 
 services:
   switch-1:
-    image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+    image: ghcr.io/bmcdonough/binardat-switch-config:latest
     environment:
       - SWITCH_IP=192.168.2.1
       - SWITCH_USERNAME=admin
@@ -439,7 +439,7 @@ services:
     network_mode: host
 
   switch-2:
-    image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+    image: ghcr.io/bmcdonough/binardat-switch-config:latest
     environment:
       - SWITCH_IP=192.168.2.2
       - SWITCH_USERNAME=admin
@@ -447,7 +447,7 @@ services:
     network_mode: host
 
   switch-3:
-    image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+    image: ghcr.io/bmcdonough/binardat-switch-config:latest
     environment:
       - SWITCH_IP=192.168.2.3
       - SWITCH_USERNAME=admin
@@ -471,7 +471,7 @@ For troubleshooting, show the browser window:
 docker run --network host \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+  ghcr.io/bmcdonough/binardat-switch-config:latest \
   --show-browser
 ```
 
@@ -485,7 +485,7 @@ Override the default ChromeDriver location:
 docker run --network host \
   -e CHROMEDRIVER_PATH=/custom/path/chromedriver \
   -v /path/to/chromedriver:/custom/path/chromedriver \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Increased Timeout for Slow Networks
@@ -495,7 +495,7 @@ For switches on slow or unreliable networks:
 ```bash
 docker run --network host \
   -e TIMEOUT=30 \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Skip SSH Verification
@@ -504,7 +504,7 @@ If you don't want to verify SSH port accessibility after enablement:
 
 ```bash
 docker run --network host \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+  ghcr.io/bmcdonough/binardat-switch-config:latest \
   --no-verify
 ```
 
@@ -515,7 +515,7 @@ Save container output to a file:
 ```bash
 docker run --network host \
   -e SWITCH_IP=192.168.2.1 \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+  ghcr.io/bmcdonough/binardat-switch-config:latest \
   2>&1 | tee ssh-enable.log
 ```
 
@@ -524,7 +524,7 @@ docker run --network host \
 For quick operations:
 
 ```bash
-docker run --rm --network host -e SWITCH_IP=192.168.2.50 ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --rm --network host -e SWITCH_IP=192.168.2.50 ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 The `--rm` flag automatically removes the container after it exits.
@@ -536,7 +536,7 @@ The `--rm` flag automatically removes the container after it exits.
 Containers automatically exit after SSH enablement:
 
 ```bash
-docker run --rm --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --rm --network host ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 The `--rm` flag ensures the container is removed after exit.
@@ -561,7 +561,7 @@ docker container prune
 Pull the latest image:
 
 ```bash
-docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker pull ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ## Exit Codes
@@ -578,7 +578,7 @@ The container returns standard exit codes:
 Use in scripts:
 
 ```bash
-if docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest; then
+if docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest; then
   echo "SSH enabled successfully"
 else
   echo "Failed to enable SSH"

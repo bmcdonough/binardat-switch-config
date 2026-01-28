@@ -96,7 +96,7 @@ The image comes pre-configured with common defaults:
 - **SSH Port**: 22
 
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Custom Credentials
@@ -108,7 +108,7 @@ docker run --network host \
   -e SWITCH_IP=192.168.1.100 \
   -e SWITCH_USERNAME=myadmin \
   -e SWITCH_PASSWORD=mypassword \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ## Documentation
@@ -152,10 +152,10 @@ This project uses calendar versioning (CalVer): `YYYY.MM.DD[.MICRO]`
 
 Multiple tags are available for different use cases:
 
-- **Specific version**: `ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28` (recommended for production)
-- **Latest stable**: `ghcr.io/bmcdonough/binardat-ssh-enabler:latest`
-- **Month alias**: `ghcr.io/bmcdonough/binardat-ssh-enabler:2026.01`
-- **Year alias**: `ghcr.io/bmcdonough/binardat-ssh-enabler:2026`
+- **Specific version**: `ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28` (recommended for production)
+- **Latest stable**: `ghcr.io/bmcdonough/binardat-switch-config:latest`
+- **Month alias**: `ghcr.io/bmcdonough/binardat-switch-config:2026.01`
+- **Year alias**: `ghcr.io/bmcdonough/binardat-switch-config:2026`
 
 **Production recommendation**: Always pin to specific version tag to ensure reproducibility.
 
