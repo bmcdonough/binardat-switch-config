@@ -25,6 +25,8 @@ Network switch configuration management with netmiko. Automatically backup, vers
 
 ## Installation
 
+### Standard Installation
+
 ```bash
 # Clone repository
 git clone https://github.com/yourusername/binardat-switch-config.git
@@ -36,6 +38,10 @@ pip install -e .
 # Or install with dev dependencies
 pip install -e ".[dev]"
 ```
+
+### Docker Installation
+
+See [Docker Guide](docs/DOCKER.md) for building, running, and managing Docker images.
 
 ## Quick Start
 
