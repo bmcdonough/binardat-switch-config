@@ -25,9 +25,9 @@ dist/
 .coverage
 htmlcov/
 *.md
+!README.md
 !README-SSH.md
 .gitignore
 .pre-commit-config.yaml
-pyproject.toml
 requirements.txt
 requirements-dev.txt
