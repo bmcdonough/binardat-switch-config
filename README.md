@@ -31,107 +31,38 @@ When factory reset, the switch defaults to:
   - [Amazon Product Page](https://www.amazon.com/dp/B0D97B1V5R)
   - [Binardat Product Page](https://www.binardat.com/products/20-port-25g-web-managed-switch,-16x25g-ethernet,-4x10-gigabit-sfp-ports,-web-cli-l3-managed,-metal-multi-gigabit-desktop-rackmount-network-switch-1)
 
-## Features
-
-- Automated switch configuration from YAML or JSON templates
-- Support for SSH, Telnet, and HTTP API connections
-- Validation of switch configurations before applying
-- Backup and restore capabilities
-- CLI interface for interactive configuration
-
-## Installation
-
-### For Users
-
-```bash
-pip install binardat-switch-config
-```
-
-### For Development
-
-```bash
-# Clone the repository
-git clone https://github.com/bmcdonough/binardat-switch-config.git
-cd binardat-switch-config
-
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install in editable mode with development dependencies
-pip install -e ".[dev]"
-
-# Install pre-commit hooks
-pre-commit install
-```
-
 ## Docker Quick Start
 
 The fastest way to enable SSH on your Binardat switch is using Docker:
 
-```bash
-# Using defaults (192.168.2.1, admin/admin)
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+### Default Configuration
 
-# With custom IP and credentials
+The image comes pre-configured with common defaults:
+- **Switch IP**: 192.168.2.1
+- **Username**: admin
+- **Password**: admin
+- **SSH Port**: 22
+
+```bash
+docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+```
+
+### Custom Credentials
+
+If you've changed the default credentials:
+
+```bash
 docker run --network host \
-  -e SWITCH_IP=192.168.2.50 \
+  -e SWITCH_IP=192.168.1.100 \
+  -e SWITCH_USERNAME=myadmin \
   -e SWITCH_PASSWORD=mypassword \
   ghcr.io/bmcdonough/binardat-ssh-enabler:latest
 ```
 
-**Documentation:**
+## Documentation
 - [Docker Quick Start](docs/docker/quickstart.md) - Get started in minutes
 - [Docker Usage Guide](docs/docker/usage.md) - Comprehensive reference
 - [Troubleshooting](docs/docker/troubleshooting.md) - Common issues and solutions
-
-**Building Locally:**
-
-```bash
-# Clone and build
-git clone https://github.com/bmcdonough/binardat-switch-config.git
-cd binardat-switch-config
-git checkout develop
-
-# Build and run
-docker build -t binardat-ssh-enabler:latest .
-docker run --network host binardat-ssh-enabler:latest
-```
-
-## Usage
-
-```python
-from binardat_switch_config import SwitchConfig, connect_to_switch
-
-# Connect to a switch (using default IP and credentials)
-conn = connect_to_switch("192.168.2.1", username="admin", password="admin")
-
-# Load and apply configuration
-config = SwitchConfig.from_file("switch_config.yaml")
-conn.apply_config(config)
-```
-
-## Development
-
-See [CLAUDE.md](CLAUDE.md) for detailed development guidelines.
-
-### Running Tests
-
-```bash
-pytest                  # Run all tests
-pytest --cov           # Run with coverage report
-```
-
-### Code Quality
-
-```bash
-black .                 # Format code
-isort .                 # Sort imports
-flake8 .                # Lint code
-mypy .                  # Type check
-pydocstyle .            # Check docstrings
-pre-commit run --all-files  # Run all checks
-```
 
 ## Project Structure
 
