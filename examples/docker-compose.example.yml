@@ -3,7 +3,7 @@ version: '3.8'
 # Example 1: Single switch with environment variables
 services:
   ssh-enabler:
-    image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+    image: ghcr.io/bmcdonough/binardat-switch-config:latest
     environment:
       - SWITCH_IP=${SWITCH_IP:-192.168.2.1}
       - SWITCH_USERNAME=${SWITCH_USERNAME:-admin}
@@ -16,7 +16,7 @@ services:
 #
 # services:
 #   ssh-enabler:
-#     image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+#     image: ghcr.io/bmcdonough/binardat-switch-config:latest
 #     env_file:
 #       - .env
 #     network_mode: host
@@ -26,7 +26,7 @@ services:
 #
 # services:
 #   switch-1:
-#     image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+#     image: ghcr.io/bmcdonough/binardat-switch-config:latest
 #     environment:
 #       - SWITCH_IP=192.168.2.1
 #       - SWITCH_USERNAME=admin
@@ -34,7 +34,7 @@ services:
 #     network_mode: host
 #
 #   switch-2:
-#     image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+#     image: ghcr.io/bmcdonough/binardat-switch-config:latest
 #     environment:
 #       - SWITCH_IP=192.168.2.2
 #       - SWITCH_USERNAME=admin
@@ -42,7 +42,7 @@ services:
 #     network_mode: host
 #
 #   switch-3:
-#     image: ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+#     image: ghcr.io/bmcdonough/binardat-switch-config:latest
 #     environment:
 #       - SWITCH_IP=192.168.2.3
 #       - SWITCH_USERNAME=admin

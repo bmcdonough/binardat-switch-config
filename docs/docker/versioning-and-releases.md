@@ -189,17 +189,17 @@ Each release creates MULTIPLE Docker image tags:
 **For release v2026.01.28**:
 
 ```bash
-ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28   # Specific version
-ghcr.io/bmcdonough/binardat-ssh-enabler:2026.01       # Month alias
-ghcr.io/bmcdonough/binardat-ssh-enabler:2026          # Year alias
-ghcr.io/bmcdonough/binardat-ssh-enabler:latest        # Latest stable
+ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28   # Specific version
+ghcr.io/bmcdonough/binardat-switch-config:2026.01       # Month alias
+ghcr.io/bmcdonough/binardat-switch-config:2026          # Year alias
+ghcr.io/bmcdonough/binardat-switch-config:latest        # Latest stable
 ```
 
 **For pre-release v2026.01.28-rc.1**:
 
 ```bash
-ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28-rc.1  # Specific RC
-ghcr.io/bmcdonough/binardat-ssh-enabler:rc                # Latest RC
+ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28-rc.1  # Specific RC
+ghcr.io/bmcdonough/binardat-switch-config:rc                # Latest RC
 ```
 
 ### Tag Stability Guarantees
@@ -217,17 +217,17 @@ ghcr.io/bmcdonough/binardat-ssh-enabler:rc                # Latest RC
 
 **Production**: Always pin to specific version
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v2026.01.28
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:v2026.01.28
 ```
 
 **Development/Testing**: Use latest or dev
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 **Continuous updates**: Use month alias (updates automatically each month)
 ```bash
-docker run --network host ghcr.io/bmcdonough/binardat-ssh-enabler:2026.01
+docker run --network host ghcr.io/bmcdonough/binardat-switch-config:2026.01
 ```
 
 ## Release Process
@@ -498,10 +498,10 @@ docker build \
   --build-arg VERSION="v$VERSION" \
   --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
   --build-arg VCS_REF="$(git rev-parse HEAD)" \
-  --tag ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION \
-  --tag ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
-  --tag ghcr.io/bmcdonough/binardat-ssh-enabler:$(echo $VERSION | cut -d. -f1-2) \
-  --tag ghcr.io/bmcdonough/binardat-ssh-enabler:$(echo $VERSION | cut -d. -f1) \
+  --tag ghcr.io/bmcdonough/binardat-switch-config:v$VERSION \
+  --tag ghcr.io/bmcdonough/binardat-switch-config:latest \
+  --tag ghcr.io/bmcdonough/binardat-switch-config:$(echo $VERSION | cut -d. -f1-2) \
+  --tag ghcr.io/bmcdonough/binardat-switch-config:$(echo $VERSION | cut -d. -f1) \
   .
 ```
 
@@ -509,10 +509,10 @@ docker build \
 
 ```bash
 # Test with default settings (use a test switch or dry-run mode)
-docker run --rm --network host ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION
+docker run --rm --network host ghcr.io/bmcdonough/binardat-switch-config:v$VERSION
 
 # Verify version labels
-docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION | \
+docker inspect ghcr.io/bmcdonough/binardat-switch-config:v$VERSION | \
   jq '.[0].Config.Labels'
 ```
 
@@ -524,10 +524,10 @@ docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION | \
 echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_GITHUB_USERNAME --password-stdin
 
 # Push all tags
-docker push ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION
-docker push ghcr.io/bmcdonough/binardat-ssh-enabler:latest
-docker push ghcr.io/bmcdonough/binardat-ssh-enabler:$(echo $VERSION | cut -d. -f1-2)
-docker push ghcr.io/bmcdonough/binardat-ssh-enabler:$(echo $VERSION | cut -d. -f1)
+docker push ghcr.io/bmcdonough/binardat-switch-config:v$VERSION
+docker push ghcr.io/bmcdonough/binardat-switch-config:latest
+docker push ghcr.io/bmcdonough/binardat-switch-config:$(echo $VERSION | cut -d. -f1-2)
+docker push ghcr.io/bmcdonough/binardat-switch-config:$(echo $VERSION | cut -d. -f1)
 ```
 
 #### Step 13: Create GitHub Release
@@ -691,12 +691,12 @@ docker build \
   --build-arg VERSION="v$VERSION" \
   --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
   --build-arg VCS_REF="$(git rev-parse HEAD)" \
-  --tag ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION \
-  --tag ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+  --tag ghcr.io/bmcdonough/binardat-switch-config:v$VERSION \
+  --tag ghcr.io/bmcdonough/binardat-switch-config:latest \
   .
 
-docker push ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION
-docker push ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker push ghcr.io/bmcdonough/binardat-switch-config:v$VERSION
+docker push ghcr.io/bmcdonough/binardat-switch-config:latest
 
 # Create GitHub release
 gh release create v$VERSION \
@@ -714,12 +714,12 @@ gh issue comment $ISSUE_NUMBER \
 
 Users can pull the latest image:
 \`\`\`bash
-docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker pull ghcr.io/bmcdonough/binardat-switch-config:latest
 \`\`\`
 
 Or pin to this specific hotfix:
 \`\`\`bash
-docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION
+docker pull ghcr.io/bmcdonough/binardat-switch-config:v$VERSION
 \`\`\`"
 ```
 
@@ -763,14 +763,14 @@ Future implementation should include automated releases via GitHub Actions.
 export GOOD_VERSION="2026.01.27"
 
 # Pull previous version
-docker pull ghcr.io/bmcdonough/binardat-ssh-enabler:v$GOOD_VERSION
+docker pull ghcr.io/bmcdonough/binardat-switch-config:v$GOOD_VERSION
 
 # Re-tag as latest
-docker tag ghcr.io/bmcdonough/binardat-ssh-enabler:v$GOOD_VERSION \
-  ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker tag ghcr.io/bmcdonough/binardat-switch-config:v$GOOD_VERSION \
+  ghcr.io/bmcdonough/binardat-switch-config:latest
 
 # Push updated latest tag
-docker push ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker push ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 **Note**: This doesn't remove the bad version, but prevents new users from getting it via `latest` tag.
@@ -784,7 +784,7 @@ git tag -d v$BAD_VERSION
 git push origin :refs/tags/v$BAD_VERSION
 
 # Delete bad Docker image tags (requires GitHub package admin access)
-# Via GitHub UI: Packages → binardat-ssh-enabler → Select version → Delete
+# Via GitHub UI: Packages → binardat-switch-config → Select version → Delete
 
 # Create hotfix release with fixes
 export HOTFIX_VERSION="2026.01.28.1"
@@ -858,7 +858,7 @@ Always use the `v` prefix in branch names for releases and hotfixes to match the
 **A**: Inspect the Docker image labels:
 
 ```bash
-docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+docker inspect ghcr.io/bmcdonough/binardat-switch-config:latest | \
   jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
 ```
 
@@ -882,7 +882,7 @@ cat VERSION
 git describe --tags --abbrev=0
 
 # From Docker image labels
-docker inspect ghcr.io/bmcdonough/binardat-ssh-enabler:latest | \
+docker inspect ghcr.io/bmcdonough/binardat-switch-config:latest | \
   jq -r '.[0].Config.Labels."org.opencontainers.image.version"'
 ```
 
@@ -933,16 +933,16 @@ docker build \
   --build-arg VERSION="v$VERSION" \
   --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
   --build-arg VCS_REF="$(git rev-parse HEAD)" \
-  -t ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION \
-  -t ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+  -t ghcr.io/bmcdonough/binardat-switch-config:v$VERSION \
+  -t ghcr.io/bmcdonough/binardat-switch-config:latest \
   .
 ```
 
 ### Push Docker Image
 
 ```bash
-docker push ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION
-docker push ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+docker push ghcr.io/bmcdonough/binardat-switch-config:v$VERSION
+docker push ghcr.io/bmcdonough/binardat-switch-config:latest
 ```
 
 ### Create GitHub Release

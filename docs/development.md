@@ -136,12 +136,12 @@ If you need to create a release manually:
      --build-arg VERSION="v$VERSION" \
      --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
      --build-arg VCS_REF="$(git rev-parse HEAD)" \
-     -t ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION \
-     -t ghcr.io/bmcdonough/binardat-ssh-enabler:latest \
+     -t ghcr.io/bmcdonough/binardat-switch-config:v$VERSION \
+     -t ghcr.io/bmcdonough/binardat-switch-config:latest \
      .
 
-   docker push ghcr.io/bmcdonough/binardat-ssh-enabler:v$VERSION
-   docker push ghcr.io/bmcdonough/binardat-ssh-enabler:latest
+   docker push ghcr.io/bmcdonough/binardat-switch-config:v$VERSION
+   docker push ghcr.io/bmcdonough/binardat-switch-config:latest
    ```
 
 7. **Create GitHub release**:

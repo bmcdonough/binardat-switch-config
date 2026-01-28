@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- Docker image renamed from `binardat-ssh-enabler` to `binardat-switch-config` throughout all documentation and configuration files
+- Updated `.dockerignore` to include `pyproject.toml` in Docker builds (previously excluded)
+- Updated `.dockerignore` to explicitly include `README.md` in Docker builds
+
 ## [2026.01.28] - 2026-01-28
 
 Initial release of the Binardat Switch Configuration tool.
