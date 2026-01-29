@@ -43,12 +43,15 @@ def main():
     env_config = load_config_from_env()
 
     parser = argparse.ArgumentParser(
-        description="Enable SSH on Binardat switch via web interface",
+        description="Enable or disable SSH on Binardat switch via web interface",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Use defaults from environment variables or fallback to 192.168.2.1, admin/admin
+  # Enable SSH (default action)
   binardat-config
+
+  # Disable SSH
+  binardat-config --disable
 
   # Custom switch IP (overrides SWITCH_IP env var)
   binardat-config --switch-ip 192.168.2.100
@@ -59,13 +62,16 @@ Examples:
   # Show browser for debugging
   binardat-config --show-browser
 
-  # Full configuration
+  # Full configuration for enabling SSH
   binardat-config \\
     --switch-ip 192.168.2.1 \\
     --username admin \\
     --password admin \\
     --port 22 \\
     --show-browser
+
+  # Disable SSH with custom IP
+  binardat-config --disable --switch-ip 192.168.2.100
 
 Environment Variables:
   SWITCH_IP         - Switch IP address (default: 192.168.2.1)
@@ -81,6 +87,11 @@ Environment Variables:
         action='version',
         version=f'%(prog)s {__version__}',
         help='Show version and exit'
+    )
+    parser.add_argument(
+        '--disable',
+        action='store_true',
+        help='Disable SSH instead of enabling it (default: enable SSH)'
     )
     parser.add_argument(
         '--switch-ip',
@@ -128,20 +139,30 @@ Environment Variables:
         timeout=args.timeout
     )
 
-    # Enable SSH
-    success = enabler.enable_ssh(
-        switch_ip=args.switch_ip,
-        username=args.username,
-        password=args.password,
-        port=args.port
-    )
+    # Enable or disable SSH based on flag
+    if args.disable:
+        success = enabler.disable_ssh(
+            switch_ip=args.switch_ip,
+            username=args.username,
+            password=args.password,
+            port=args.port
+        )
+        action = "disablement"
+    else:
+        success = enabler.enable_ssh(
+            switch_ip=args.switch_ip,
+            username=args.username,
+            password=args.password,
+            port=args.port
+        )
+        action = "enablement"
 
     if not success:
-        print("\n✗ SSH enablement failed")
+        print(f"\n✗ SSH {action} failed")
         return 1
 
-    # Verify SSH port accessibility unless disabled
-    if not args.no_verify:
+    # Verify SSH port accessibility unless disabled or we're disabling SSH
+    if not args.no_verify and not args.disable:
         print(f"\n{'='*60}")
         print(f"Verifying SSH port {args.port} accessibility...")
         print(f"{'='*60}\n")
@@ -163,11 +184,31 @@ Environment Variables:
             print(f"  1. Reboot the switch")
             print(f"  2. Verify SSH is enabled in web interface")
             print(f"  3. Check switch firewall settings")
+    elif args.disable and not args.no_verify:
+        print(f"\n{'='*60}")
+        print(f"Verifying SSH port {args.port} is closed...")
+        print(f"{'='*60}\n")
+
+        print("Waiting for SSH service to stop (5 seconds)...")
+        time.sleep(5)
+
+        if not verify_ssh_port(args.switch_ip, args.port):
+            print(f"✓ SSH port {args.port} is no longer accessible")
+            print("\nSSH has been successfully disabled")
+        else:
+            print(f"⚠ SSH port {args.port} is still responding")
+            print("\nPossible reasons:")
+            print("  - SSH service requires switch reboot to stop")
+            print("  - Configuration change hasn't taken effect yet")
+            print("\nTry:")
+            print(f"  1. Reboot the switch")
+            print(f"  2. Verify SSH is disabled in web interface")
     else:
         print("\nSkipping verification (--no-verify)")
 
     print(f"\n{'='*60}")
-    print("SSH ENABLEMENT COMPLETED")
+    operation = "DISABLEMENT" if args.disable else "ENABLEMENT"
+    print(f"SSH {operation} COMPLETED")
     print(f"Switch: {args.switch_ip}")
     print(f"Port: {args.port}")
     print(f"{'='*60}\n")

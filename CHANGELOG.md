@@ -6,10 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- SSH disablement functionality via `--disable` CLI flag
+- Ability to disable SSH on Binardat switches using the same Selenium-based automation
+- Verification of SSH port closure after disablement (when verification is not disabled)
+
 ### Changed
 - Docker image renamed from `binardat-ssh-enabler` to `binardat-switch-config` throughout all documentation and configuration files
 - Updated `.dockerignore` to include `pyproject.toml` in Docker builds (previously excluded)
 - Updated `.dockerignore` to explicitly include `README.md` in Docker builds
+- Refactored SSH form interaction to support both enable and disable operations
+- CLI description updated to reflect both enable and disable capabilities
 
 ## [2026.01.28] - 2026-01-28
 
