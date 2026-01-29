@@ -7,14 +7,10 @@ switches through automated web interface interaction using Selenium.
 import os
 import socket
 import time
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from selenium import webdriver
-from selenium.common.exceptions import (
-    NoSuchElementException,
-    TimeoutException,
-    WebDriverException,
-)
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -22,7 +18,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
 
-def load_config_from_env():
+def load_config_from_env() -> Dict[str, Any]:
     """Load configuration from environment variables.
 
     Returns:
@@ -119,6 +115,7 @@ class SSHEnabler:
         Returns:
             True if login successful, False otherwise.
         """
+        assert self.driver is not None, "Driver not initialized"
         try:
             url = f"http://{host}/"
             print(f"Navigating to {url}...")
@@ -147,10 +144,17 @@ class SSHEnabler:
 
             # Wait for redirect to main page (index.cgi)
             print("Waiting for main page to load...")
-            wait.until(
-                lambda d: "index.cgi" in d.current_url
-                or "index.html" in d.current_url
-            )
+
+            def check_main_page_loaded(
+                driver: webdriver.Chrome,
+            ) -> bool:
+                """Check if main page has loaded."""
+                return (
+                    "index.cgi" in driver.current_url
+                    or "index.html" in driver.current_url
+                )
+
+            wait.until(check_main_page_loaded)
 
             # Verify we're logged in by checking for main page elements
             wait.until(EC.presence_of_element_located((By.ID, "appMainInner")))
@@ -174,6 +178,7 @@ class SSHEnabler:
         Returns:
             True if navigation successful, False otherwise.
         """
+        assert self.driver is not None, "Driver not initialized"
         try:
             wait = WebDriverWait(self.driver, self.timeout)
 
@@ -194,7 +199,7 @@ class SSHEnabler:
                 text = link.text.strip()
                 if text == "Monitor Management":
                     monitor_mgmt_parent = link
-                    print(f"Found 'Monitor Management' parent menu")
+                    print("Found 'Monitor Management' parent menu")
                     break
 
             if monitor_mgmt_parent is None:
@@ -220,12 +225,13 @@ class SSHEnabler:
             except TimeoutException:
                 print("✗ Could not find link with datalink='ssh_get.cgi'")
                 visible_links = [
-                    l
-                    for l in self.driver.find_elements(By.TAG_NAME, "a")
-                    if l.is_displayed()
+                    link
+                    for link in self.driver.find_elements(By.TAG_NAME, "a")
+                    if link.is_displayed()
                 ]
                 print(
-                    f"Found {len(visible_links)} visible links after expanding menu"
+                    f"Found {len(visible_links)} visible links "
+                    "after expanding menu"
                 )
                 return False
 
@@ -272,9 +278,8 @@ class SSHEnabler:
         Returns:
             True if form submitted successfully, False otherwise.
         """
+        assert self.driver is not None, "Driver not initialized"
         try:
-            wait = WebDriverWait(self.driver, self.timeout)
-
             print("Looking for SSH enable form fields...")
 
             # Try multiple field name patterns for enable checkbox/select
@@ -290,22 +295,21 @@ class SSHEnabler:
             ]
 
             enable_field = None
-            found_selector = None
             for selector in enable_selectors:
                 try:
                     enable_field = self.driver.find_element(
                         By.CSS_SELECTOR, selector
                     )
-                    found_selector = selector
                     print(f"Found enable field with selector: {selector}")
                     break
                 except NoSuchElementException:
                     continue
 
             if enable_field is None:
-                # Fallback: find all input and select fields and display them for debugging
+                # Fallback: find all input and select fields for debugging
                 print(
-                    "Could not find enable field automatically. Inspecting form..."
+                    "Could not find enable field automatically. "
+                    "Inspecting form..."
                 )
                 inputs = self.driver.find_elements(By.TAG_NAME, "input")
                 inputs.extend(self.driver.find_elements(By.TAG_NAME, "select"))
@@ -315,7 +319,8 @@ class SSHEnabler:
                     id_attr = inp.get_attribute("id") or "no-id"
                     input_type = inp.get_attribute("type") or inp.tag_name
                     print(
-                        f"  - name='{name}', id='{id_attr}', type='{input_type}'"
+                        f"  - name='{name}', id='{id_attr}', "
+                        f"type='{input_type}'"
                     )
                 return False
 
@@ -339,11 +344,12 @@ class SSHEnabler:
                                 By.CSS_SELECTOR, f'label[for="{checkbox_id}"]'
                             )
                             print(
-                                f"Clicking label for checkbox (id={checkbox_id})"
+                                f"Clicking label for checkbox "
+                                f"(id={checkbox_id})"
                             )
                             label.click()
                         except NoSuchElementException:
-                            # Fallback: use JavaScript to click the checkbox directly
+                            # Fallback: use JavaScript to click checkbox
                             print("Using JavaScript to toggle checkbox")
                             self.driver.execute_script(
                                 "arguments[0].click();", enable_field
@@ -357,7 +363,8 @@ class SSHEnabler:
                 else:
                     state = "enabled" if enable else "disabled"
                     print(
-                        f"SSH already {state} (checkbox state matches desired state)"
+                        f"SSH already {state} "
+                        "(checkbox state matches desired state)"
                     )
             elif enable_field.tag_name == "select":
                 print("Found dropdown for SSH state")
@@ -377,7 +384,8 @@ class SSHEnabler:
                                 print("Selected value '1' from dropdown")
                             except NoSuchElementException:
                                 print(
-                                    "Warning: Could not select enable option, trying first option"
+                                    "Warning: Could not select enable "
+                                    "option, trying first option"
                                 )
                                 select.select_by_index(0)
                 else:
@@ -421,7 +429,8 @@ class SSHEnabler:
                     ]:
                         radio.click()
                         print(
-                            f"Selected enable radio button with value '{radio_value}'"
+                            f"Selected enable radio button with value "
+                            f"'{radio_value}'"
                         )
                         break
                     elif not enable and radio_value in [
@@ -432,26 +441,30 @@ class SSHEnabler:
                     ]:
                         radio.click()
                         print(
-                            f"Selected disable radio button with value '{radio_value}'"
+                            f"Selected disable radio button with value "
+                            f"'{radio_value}'"
                         )
                         break
             else:
                 print(
-                    f"Warning: Unknown field type for enable: {enable_field.tag_name}"
+                    f"Warning: Unknown field type for enable: "
+                    f"{enable_field.tag_name}"
                 )
 
-            # Note: The SSH checkbox has an onChange handler that submits immediately
-            # No separate submit button is needed. The checkbox click triggers:
+            # Note: The SSH checkbox has an onChange handler
+            # that submits immediately. No separate submit button is
+            # needed. The checkbox click triggers:
             # httpPostGet('POST', 'ssh_post.cgi', 'ssh_enable=on', ...)
             # Then the page reloads with reCurrentWeb()
 
             action = "enable" if enable else "disable"
             print(f"Waiting for SSH {action} submission to complete...")
-            # The JavaScript waits up to 60 seconds and then reloads the page
+            # The JavaScript waits up to 60 seconds then reloads page
             # Wait for the page to potentially reload
             time.sleep(5)
 
-            # Optional: Check if SSH config fields are now visible (indicates SSH is enabled)
+            # Optional: Check if SSH config fields are now visible
+            # (indicates SSH is enabled)
             if enable:
                 try:
                     # These fields appear after SSH is enabled
@@ -462,13 +475,15 @@ class SSHEnabler:
                         elem.is_displayed() for elem in ssh_args
                     ):
                         print(
-                            "✓ SSH configuration fields are now visible (SSH enabled)"
+                            "✓ SSH configuration fields are now visible "
+                            "(SSH enabled)"
                         )
                     else:
                         print(
-                            "Note: SSH config fields not visible (may need page refresh)"
+                            "Note: SSH config fields not visible "
+                            "(may need page refresh)"
                         )
-                except:
+                except Exception:
                     pass
 
             print("✓ Form submitted successfully")
@@ -487,11 +502,12 @@ class SSHEnabler:
         Returns:
             True if save successful, False otherwise.
         """
+        assert self.driver is not None, "Driver not initialized"
         try:
             print("Saving configuration to switch...")
 
             # Execute JavaScript to call the save command
-            # Based on the documentation, switches use syscmd.cgi with cmd=save
+            # Based on docs, switches use syscmd.cgi with cmd=save
             self.driver.execute_script(
                 """
                 httpPostGet('POST', 'syscmd.cgi', 'cmd=save', function(val) {

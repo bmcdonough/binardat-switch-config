@@ -19,7 +19,7 @@ from binardat_switch_config.ssh_enabler import (
 shutdown_requested = False
 
 
-def signal_handler(signum, frame):
+def signal_handler(signum: int, frame: object) -> None:
     """Handle shutdown signals gracefully.
 
     Args:
@@ -32,7 +32,7 @@ def signal_handler(signum, frame):
     sys.exit(0)
 
 
-def main():
+def main() -> int:
     """Main entry point for the CLI."""
     # Register signal handlers for graceful shutdown
     signal.signal(signal.SIGTERM, signal_handler)
@@ -42,7 +42,9 @@ def main():
     env_config = load_config_from_env()
 
     parser = argparse.ArgumentParser(
-        description="Enable or disable SSH on Binardat switch via web interface",
+        description=(
+            "Enable or disable SSH on Binardat switch via web interface"
+        ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -95,7 +97,10 @@ Environment Variables:
     parser.add_argument(
         "--switch-ip",
         default=env_config["switch_ip"],
-        help=f"IP address of the switch (default from env: {env_config['switch_ip']})",
+        help=(
+            f"IP address of the switch "
+            f"(default from env: {env_config['switch_ip']})"
+        ),
     )
     parser.add_argument(
         "-u",
@@ -124,7 +129,10 @@ Environment Variables:
         "--timeout",
         type=int,
         default=env_config["timeout"],
-        help=f"Timeout in seconds for page loads (default from env: {env_config['timeout']})",
+        help=(
+            f"Timeout in seconds for page loads "
+            f"(default from env: {env_config['timeout']})"
+        ),
     )
     parser.add_argument(
         "--no-verify", action="store_true", help="Skip SSH port verification"
@@ -168,7 +176,7 @@ Environment Variables:
 
         if verify_ssh_port(args.switch_ip, args.port):
             print(f"✓ SSH port {args.port} is accessible")
-            print(f"\nYou can now connect via SSH:")
+            print("\nYou can now connect via SSH:")
             print(f"  ssh {args.username}@{args.switch_ip}")
         else:
             print(f"⚠ SSH port {args.port} is not responding")
@@ -177,9 +185,9 @@ Environment Variables:
             print("  - SSH is enabled but on a different port")
             print("  - Firewall blocking SSH connections")
             print("\nTry:")
-            print(f"  1. Reboot the switch")
-            print(f"  2. Verify SSH is enabled in web interface")
-            print(f"  3. Check switch firewall settings")
+            print("  1. Reboot the switch")
+            print("  2. Verify SSH is enabled in web interface")
+            print("  3. Check switch firewall settings")
     elif args.disable and not args.no_verify:
         print(f"\n{'='*60}")
         print(f"Verifying SSH port {args.port} is closed...")
@@ -197,8 +205,8 @@ Environment Variables:
             print("  - SSH service requires switch reboot to stop")
             print("  - Configuration change hasn't taken effect yet")
             print("\nTry:")
-            print(f"  1. Reboot the switch")
-            print(f"  2. Verify SSH is disabled in web interface")
+            print("  1. Reboot the switch")
+            print("  2. Verify SSH is disabled in web interface")
     else:
         print("\nSkipping verification (--no-verify)")
 
