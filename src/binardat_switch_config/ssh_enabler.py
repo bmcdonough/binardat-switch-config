@@ -492,11 +492,13 @@ class SSHEnabler:
 
             # Execute JavaScript to call the save command
             # Based on the documentation, switches use syscmd.cgi with cmd=save
-            self.driver.execute_script("""
+            self.driver.execute_script(
+                """
                 httpPostGet('POST', 'syscmd.cgi', 'cmd=save', function(val) {
                     console.log('Configuration saved:', val);
                 });
-            """)
+            """
+            )
 
             time.sleep(2)
 
