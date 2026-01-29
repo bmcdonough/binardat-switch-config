@@ -78,65 +78,62 @@ Environment Variables:
   SWITCH_PASSWORD   - Login password (default: admin)
   SWITCH_SSH_PORT   - SSH port number (default: 22)
   TIMEOUT           - Timeout in seconds (default: 10)
-        """
+        """,
     )
 
     parser.add_argument(
-        '--version',
-        action='version',
-        version=f'%(prog)s {__version__}',
-        help='Show version and exit'
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Show version and exit",
     )
     parser.add_argument(
-        '--disable',
-        action='store_true',
-        help='Disable SSH instead of enabling it (default: enable SSH)'
+        "--disable",
+        action="store_true",
+        help="Disable SSH instead of enabling it (default: enable SSH)",
     )
     parser.add_argument(
-        '--switch-ip',
-        default=env_config['switch_ip'],
-        help=f"IP address of the switch (default from env: {env_config['switch_ip']})"
+        "--switch-ip",
+        default=env_config["switch_ip"],
+        help=f"IP address of the switch (default from env: {env_config['switch_ip']})",
     )
     parser.add_argument(
-        '-u', '--username',
-        default=env_config['username'],
-        help=f"Login username (default from env: {env_config['username']})"
+        "-u",
+        "--username",
+        default=env_config["username"],
+        help=f"Login username (default from env: {env_config['username']})",
     )
     parser.add_argument(
-        '-p', '--password',
-        default=env_config['password'],
-        help='Login password (default from env or --password)'
+        "-p",
+        "--password",
+        default=env_config["password"],
+        help="Login password (default from env or --password)",
     )
     parser.add_argument(
-        '--port',
+        "--port",
         type=int,
-        default=env_config['port'],
-        help=f"SSH port number (default from env: {env_config['port']})"
+        default=env_config["port"],
+        help=f"SSH port number (default from env: {env_config['port']})",
     )
     parser.add_argument(
-        '--show-browser',
-        action='store_true',
-        help='Show browser window (default: headless mode)'
+        "--show-browser",
+        action="store_true",
+        help="Show browser window (default: headless mode)",
     )
     parser.add_argument(
-        '--timeout',
+        "--timeout",
         type=int,
-        default=env_config['timeout'],
-        help=f"Timeout in seconds for page loads (default from env: {env_config['timeout']})"
+        default=env_config["timeout"],
+        help=f"Timeout in seconds for page loads (default from env: {env_config['timeout']})",
     )
     parser.add_argument(
-        '--no-verify',
-        action='store_true',
-        help='Skip SSH port verification'
+        "--no-verify", action="store_true", help="Skip SSH port verification"
     )
 
     args = parser.parse_args()
 
     # Create enabler instance
-    enabler = SSHEnabler(
-        headless=not args.show_browser,
-        timeout=args.timeout
-    )
+    enabler = SSHEnabler(headless=not args.show_browser, timeout=args.timeout)
 
     # Enable or disable SSH based on flag
     if args.disable:
@@ -144,7 +141,7 @@ Environment Variables:
             switch_ip=args.switch_ip,
             username=args.username,
             password=args.password,
-            port=args.port
+            port=args.port,
         )
         action = "disablement"
     else:
@@ -152,7 +149,7 @@ Environment Variables:
             switch_ip=args.switch_ip,
             username=args.username,
             password=args.password,
-            port=args.port
+            port=args.port,
         )
         action = "enablement"
 
@@ -215,5 +212,5 @@ Environment Variables:
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())
