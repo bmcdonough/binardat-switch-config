@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- Pre-commit hooks for automated code quality checks (isort, black, flake8, mypy, pydocstyle)
+- GitHub Actions CI/CD workflow with linting and testing across Python 3.9-3.12
+- Enhanced tool configurations for flake8, coverage, mypy, pytest, and pydocstyle
+- Type marker file (py.typed) for better mypy support
+
+### Changed
+- Updated minimum versions for dev dependencies to match tested versions
+- Enhanced mypy configuration with stricter type checking rules
+- Improved pytest configuration with additional test discovery patterns
+- Enhanced isort and black configurations for better code formatting
+
 ## [2026.01.29] - 2026-01-29
 
 ### Added
