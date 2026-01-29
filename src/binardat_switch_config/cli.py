@@ -15,7 +15,6 @@ from binardat_switch_config.ssh_enabler import (
     verify_ssh_port,
 )
 
-
 # Global flag for graceful shutdown
 shutdown_requested = False
 
