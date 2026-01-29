@@ -259,10 +259,11 @@ class SSHEnabler:
             traceback.print_exc()
             return False
 
-    def _enable_ssh_form(self, port: int = 22) -> bool:
-        """Fill and submit the SSH enablement form.
+    def _set_ssh_state(self, enable: bool, port: int = 22) -> bool:
+        """Set SSH state (enable or disable) via the web form.
 
         Args:
+            enable: True to enable SSH, False to disable.
             port: SSH port number. Defaults to 22.
 
         Returns:
@@ -309,11 +310,15 @@ class SSHEnabler:
                     print(f"  - name='{name}', id='{id_attr}', type='{input_type}'")
                 return False
 
-            # Enable SSH based on field type
+            # Set SSH state based on field type
             if enable_field.tag_name == "input" and enable_field.get_attribute("type") == "checkbox":
-                print("Found checkbox for SSH enable")
-                if not enable_field.is_selected():
-                    print("Enabling SSH (checking checkbox)...")
+                print("Found checkbox for SSH state")
+                is_currently_enabled = enable_field.is_selected()
+
+                # Only toggle if current state doesn't match desired state
+                if is_currently_enabled != enable:
+                    action = "Enabling" if enable else "Disabling"
+                    print(f"{action} SSH (toggling checkbox)...")
                     checkbox_id = enable_field.get_attribute("id")
                     if checkbox_id:
                         # Try to find and click the label for this checkbox
@@ -323,39 +328,67 @@ class SSHEnabler:
                             label.click()
                         except NoSuchElementException:
                             # Fallback: use JavaScript to click the checkbox directly
-                            print("Using JavaScript to check checkbox")
+                            print("Using JavaScript to toggle checkbox")
                             self.driver.execute_script("arguments[0].click();", enable_field)
                     else:
                         # No ID, use JavaScript to click
-                        print("Using JavaScript to check checkbox")
+                        print("Using JavaScript to toggle checkbox")
                         self.driver.execute_script("arguments[0].click();", enable_field)
                 else:
-                    print("SSH already enabled (checkbox is checked)")
+                    state = "enabled" if enable else "disabled"
+                    print(f"SSH already {state} (checkbox state matches desired state)")
             elif enable_field.tag_name == "select":
-                print("Found dropdown for SSH enable")
+                print("Found dropdown for SSH state")
                 select = Select(enable_field)
-                # Try to select "Enabled", "Enable", "1", etc.
-                try:
-                    select.select_by_visible_text("Enabled")
-                    print("Selected 'Enabled' from dropdown")
-                except NoSuchElementException:
+                if enable:
+                    # Try to select "Enabled", "Enable", "1", etc.
                     try:
-                        select.select_by_visible_text("Enable")
-                        print("Selected 'Enable' from dropdown")
+                        select.select_by_visible_text("Enabled")
+                        print("Selected 'Enabled' from dropdown")
                     except NoSuchElementException:
                         try:
-                            select.select_by_value("1")
-                            print("Selected value '1' from dropdown")
+                            select.select_by_visible_text("Enable")
+                            print("Selected 'Enable' from dropdown")
                         except NoSuchElementException:
-                            print("Warning: Could not select enable option, trying first option")
-                            select.select_by_index(0)
+                            try:
+                                select.select_by_value("1")
+                                print("Selected value '1' from dropdown")
+                            except NoSuchElementException:
+                                print("Warning: Could not select enable option, trying first option")
+                                select.select_by_index(0)
+                else:
+                    # Try to select "Disabled", "Disable", "0", etc.
+                    try:
+                        select.select_by_visible_text("Disabled")
+                        print("Selected 'Disabled' from dropdown")
+                    except NoSuchElementException:
+                        try:
+                            select.select_by_visible_text("Disable")
+                            print("Selected 'Disable' from dropdown")
+                        except NoSuchElementException:
+                            try:
+                                select.select_by_value("0")
+                                print("Selected value '0' from dropdown")
+                            except NoSuchElementException:
+                                print("Warning: Could not select disable option")
+                                return False
             elif enable_field.tag_name == "input" and enable_field.get_attribute("type") == "radio":
-                print("Found radio button for SSH enable")
-                # Radio buttons with value "1" or "enable" are typically "enable"
-                radio_value = enable_field.get_attribute("value")
-                if radio_value in ["1", "enable", "enabled", "on"]:
-                    enable_field.click()
-                    print(f"Selected radio button with value '{radio_value}'")
+                print("Found radio button for SSH state")
+                # Find all radio buttons with the same name
+                radio_name = enable_field.get_attribute("name")
+                all_radios = self.driver.find_elements(By.CSS_SELECTOR, f'input[name="{radio_name}"][type="radio"]')
+
+                # Select appropriate radio button based on enable/disable
+                for radio in all_radios:
+                    radio_value = radio.get_attribute("value")
+                    if enable and radio_value in ["1", "enable", "enabled", "on"]:
+                        radio.click()
+                        print(f"Selected enable radio button with value '{radio_value}'")
+                        break
+                    elif not enable and radio_value in ["0", "disable", "disabled", "off"]:
+                        radio.click()
+                        print(f"Selected disable radio button with value '{radio_value}'")
+                        break
             else:
                 print(f"Warning: Unknown field type for enable: {enable_field.tag_name}")
 
@@ -364,21 +397,23 @@ class SSHEnabler:
             # httpPostGet('POST', 'ssh_post.cgi', 'ssh_enable=on', ...)
             # Then the page reloads with reCurrentWeb()
 
-            print("Waiting for SSH enable submission to complete...")
+            action = "enable" if enable else "disable"
+            print(f"Waiting for SSH {action} submission to complete...")
             # The JavaScript waits up to 60 seconds and then reloads the page
             # Wait for the page to potentially reload
             time.sleep(5)
 
             # Optional: Check if SSH config fields are now visible (indicates SSH is enabled)
-            try:
-                # These fields appear after SSH is enabled
-                ssh_args = self.driver.find_elements(By.CSS_SELECTOR, '.ssh-args')
-                if ssh_args and any(elem.is_displayed() for elem in ssh_args):
-                    print("✓ SSH configuration fields are now visible (SSH enabled)")
-                else:
-                    print("Note: SSH config fields not visible (may need page refresh)")
-            except:
-                pass
+            if enable:
+                try:
+                    # These fields appear after SSH is enabled
+                    ssh_args = self.driver.find_elements(By.CSS_SELECTOR, '.ssh-args')
+                    if ssh_args and any(elem.is_displayed() for elem in ssh_args):
+                        print("✓ SSH configuration fields are now visible (SSH enabled)")
+                    else:
+                        print("Note: SSH config fields not visible (may need page refresh)")
+                except:
+                    pass
 
             print("✓ Form submitted successfully")
             return True
@@ -448,8 +483,8 @@ class SSHEnabler:
             if not self._navigate_to_ssh_config():
                 return False
 
-            # Step 3: Fill and submit form
-            if not self._enable_ssh_form(port):
+            # Step 3: Enable SSH
+            if not self._set_ssh_state(enable=True, port=port):
                 return False
 
             # Step 4: Save configuration
@@ -463,6 +498,61 @@ class SSHEnabler:
 
         except Exception as e:
             print(f"\n✗ Error during SSH enablement: {e}")
+            return False
+
+        finally:
+            if self.driver:
+                print("Closing browser...")
+                self.driver.quit()
+
+    def disable_ssh(
+        self,
+        switch_ip: str,
+        username: str,
+        password: str,
+        port: int = 22
+    ) -> bool:
+        """Disable SSH on the switch.
+
+        Args:
+            switch_ip: IP address of the switch.
+            username: Login username.
+            password: Login password.
+            port: SSH port number (for reference). Defaults to 22.
+
+        Returns:
+            True if SSH disablement successful, False otherwise.
+        """
+        try:
+            self.driver = self._setup_driver()
+
+            print(f"\n{'='*60}")
+            print(f"Disabling SSH on switch: {switch_ip}")
+            print(f"{'='*60}\n")
+
+            # Step 1: Login
+            if not self._login(switch_ip, username, password):
+                return False
+
+            # Step 2: Navigate to SSH config
+            if not self._navigate_to_ssh_config():
+                return False
+
+            # Step 3: Disable SSH
+            if not self._set_ssh_state(enable=False, port=port):
+                return False
+
+            # Step 4: Save configuration
+            if not self._save_configuration():
+                print("Warning: Configuration save may have failed")
+
+            print("\n✓ SSH disablement process completed successfully")
+            print("SSH service should now be inactive...")
+
+            return True
+
+        except Exception as e:
+            print(f"\n✗ Error during SSH disablement: {e}")
             return False
 
         finally:
