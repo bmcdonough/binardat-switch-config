@@ -21,7 +21,11 @@ def _get_version() -> str:
 __version__ = _get_version()
 
 # Export main classes/functions for convenient imports
-from .ssh_enabler import SSHEnabler, load_config_from_env, verify_ssh_port  # noqa: E402
+from .ssh_enabler import (  # noqa: E402
+    SSHEnabler,
+    load_config_from_env,
+    verify_ssh_port,
+)
 
 __all__ = [
     "__version__",
