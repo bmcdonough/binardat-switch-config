@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - All flake8 errors: line length violations, unused imports, f-strings without placeholders, bare except
 - All mypy errors: missing type annotations, optional attribute access
 - Code now passes all pre-commit hooks without errors
+- CI workflow failures: black formatting inconsistency, pytest "no tests collected" error
 
 ## [2026.01.29] - 2026-01-29
 
